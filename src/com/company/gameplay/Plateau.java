@@ -57,7 +57,7 @@ public class Plateau implements Iterable<Case[]> {
      * @return La case trouvé, sinon null
      */
     public Case getCase(int x, int y){
-        // On vérifie que les coordonnés ne sont pas en dehors du plateau
+        // On vérifie que les coordonnées ne sont pas en dehors du plateau
         if (x < 0 || y < 0 || y >= plateau.length || x >= plateau[y].length)
             return null;
         return plateau[y][x];

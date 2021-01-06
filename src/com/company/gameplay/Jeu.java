@@ -16,12 +16,9 @@ public class Jeu {
     private final Plateau plateau = new Plateau();
     private final List<Joueur> joueurVivants;
 
-    private final int nbJoueurs;
-
     public Jeu(Collection<Joueur> joueurs) {
         // Initialisation de la liste de joueurs.
         joueurVivants = new LinkedList<>(joueurs);
-        nbJoueurs = joueurs.size();
     }
 
     public Jeu(Joueur[] joueurs) {
@@ -35,58 +32,81 @@ public class Jeu {
     public void jouer() {
         // On commence par demander à chaque joueur ou il veut se placer
         for (Joueur joueur : joueurVivants) {
+            // On dessine le plateau et affiche un message
             dessiner(true);
             System.out.println(ansi().fg(joueur.couleur).a(joueur.nom).a(s(" choisissez votre case de départ")).reset());
+            // Puis on attend la réponse de joueur
             Case depart = demanderCase();
+            // Et on le place à la case en question
             placerJoueur(joueur, depart);
         }
 
         Iterator<Joueur> iterator = joueurVivants.listIterator();
 
+        // Boucle sur tous les joueurs tant qu'il en rete plus d'un en vie
         while (joueurVivants.size() > 1) {
             Joueur joueur = iterator.next();
 
+
+            // Début du tour, on dessine le plateau
             dessiner(false);
 
             System.out.println(ansi().fg(joueur.couleur).a("C'est au tour de " + joueur.nom).reset());
 
+            // Si le joueur ne peux plus se déplacer, on le retire de la liste et met fin au tour
             if (!peuxJoue(joueur)) {
                 iterator.remove();
+                // Si la partie est fini, on affiche pas le message de défaite
                 if (joueurVivants.size() == 1) {
                     continue;
                 }
 
+                // Affichage du message de défaite
                 System.out.println(ansi().bgBrightRed().fgBlack().a(s("Vous êtes encerclé! Vous ne pouvez plus vous déplacer jusqu'a la fin de la partie.")).reset());
+                // On attend une seconde que le joueur puisse lire le message
                 try {
-                    Thread.sleep(500);
+                    Thread.sleep(1000);
                 } catch (InterruptedException ignored) { }
 
+                // Fin du tour
                 continue;
             }
+
+            /* ** déplacement ** */
 
             System.out.println(
                     s("Choisissez un direction dans laquelle vous déplacer\n") +
                     ansi().fgBrightBlack().a("<: Q\t^: Z\tv: S\t>: D")
             );
 
+            // On stoke la case actuelle et récupère la nouvelle en fonction de ce que le joueur entre
             Case ancienneCase = plateau.getCase(joueur.posX, joueur.posY);
             Case nouvelleCase = demanderDeplacement(joueur);
 
+            // On marque l'ancienne case comme libre et place le joueur sur la nouvelle case
             ancienneCase.liberer();
             placerJoueur(joueur, nouvelleCase);
 
+            /* ** destruction d'une case ** */
+
+            // On redessine le plateau avec les index de cases
             dessiner(true);
             System.out.println(s("Choisissez une case a détruire"));
 
+            // On détruit la case entré par le joueur
             demanderCase().detruire();
 
+            // Reprend la liste au début si on étais arrivé a la fin
             if (!iterator.hasNext()) {
                 iterator = joueurVivants.listIterator();
             }
         }
 
+        /* ** fin de la partie ** */
+
         dessiner(false);
 
+        // La liste ne contient plus que le joueur gagnant
         Joueur gagnant = joueurVivants.get(0);
 
         System.out.println(s(
@@ -191,13 +211,20 @@ public class Jeu {
 
         Case c = plateau.getCase(x, y);
 
-        if (!verifierCase(c)) {
+        if (caseOccupee(c)) {
             return demanderCase();
         }
         return c;
     }
 
+    /**
+     * Demande une direction au joueur via la console et récupère la case correspondante
+     * Réessaie tant que le joueur ne donne pas une direction correspondante à une case valide
+     * @param joueur Le joueur atour du quel cherché la case
+     * @return La case se adjacente au joueurs dans la direction donnée
+     */
     private Case demanderDeplacement(Joueur joueur) {
+        // Demande la lettre correspondant
         char choix = EntreeUtilisateur.getChar();
         Direction direction = switch (choix) {
             case 'z' -> Direction.HAUT;
@@ -214,24 +241,27 @@ public class Jeu {
 
         Case c = plateau.getAdjacente(direction, joueur.posX, joueur.posY);
 
-        if (!verifierCase(c)) {
+        if (caseOccupee(c)) {
             return demanderDeplacement(joueur);
         }
 
         return c;
-
     }
 
-    private boolean verifierCase(Case c) {
+    /**
+     * Vérifie si une case est occupée et affiche un message adéquat si c'est le cas
+     * @param c La case à tester
+     */
+    private boolean caseOccupee(Case c) {
         if (c == null) {
             // Si la case est en null, ça veux dire que le joueur a choisi une case en dehors du tableau
             System.out.println(ansi().fgBrightRed().a("Il n'y a pas de case ici").reset());
-            return false;
+            return true;
         }
 
         if (c.estLibre()) {
             // La case est libre
-            return true;
+            return false;
         }
 
         // La case n'est pa libre
@@ -244,7 +274,7 @@ public class Jeu {
             Joueur joueur = c.getOccupant();
             System.out.println(ansi().fgBrightRed().a(s("Cette case est occupé par ")).fg(joueur.couleur).a(c.getOccupant().nom).reset());
         }
-        return false;
+        return true;
     }
 
 }

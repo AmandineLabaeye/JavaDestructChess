@@ -7,6 +7,10 @@ import static com.company.Main.s;
 
 public class EntreeUtilisateur {
 
+    /**
+     * Attend un nombre dans la console, recommence tant que le joueur entre autre chose qu'un nombre
+     * @return Le nombre entré par le joueur
+     */
     public static int getInt() {
         Scanner scanner = new Scanner(System.in);
         try {
@@ -18,6 +22,10 @@ public class EntreeUtilisateur {
         }
     }
 
+    /**
+     * Attend un caractère dans la console, recommence tant que le joueur entre plus ou moins qu'un caractère
+     * @return
+     */
     public static char getChar() {
         Scanner scanner = new Scanner(System.in);
         String entree = scanner.nextLine();
