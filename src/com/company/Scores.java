@@ -42,11 +42,11 @@ public class Scores {
         };
 
         // Sous menu du score
-        System.out.println(ansi().fg(Ansi.Color.WHITE).a("* Veuillez saisir la lettre de l'option voulu               *"));
-        System.out.println(ansi().fg(Ansi.Color.BLUE).a("* - D : Voir le score (Du meilleur au moins fort)           *"));
-        System.out.println(ansi().fg(Ansi.Color.MAGENTA).a("* - C : Voir le score croissant (Du moins fort au meilleur) *"));
-        System.out.println(ansi().fg(Ansi.Color.GREEN).a("* - M : Retour au menu principal                            *"));
-        System.out.println(ansi().fg(Ansi.Color.RED).a("* - E : Pour quitter l'application                          *").reset());
+        System.out.println(ansi().fg(Ansi.Color.WHITE).a("* Veuillez saisir la lettre de l'option voulu"));
+        System.out.println(ansi().fg(Ansi.Color.BLUE).a("* - D : Voir le score (Du meilleur au moins fort)"));
+        System.out.println(ansi().fg(Ansi.Color.MAGENTA).a("* - C : Voir le score croissant (Du moins fort au meilleur)"));
+        System.out.println(ansi().fg(Ansi.Color.GREEN).a("* - M : Retour au menu principal"));
+        System.out.println(ansi().fg(Ansi.Color.RED).a("* - E : Pour quitter l'application").reset());
 
 
         //On récupérer et demande à l'utilisateur d'entrée son choix
