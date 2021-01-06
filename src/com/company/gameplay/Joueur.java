@@ -1,10 +1,17 @@
 package com.company.gameplay;
 
+import org.fusesource.jansi.Ansi;
+
 public class Joueur {
 
-    private final String nom;
+    public final String nom;
+    public final Ansi.Color couleur;
 
-    public Joueur(String nom) {
+    public int posX;
+    public int posY;
+
+    public Joueur(String nom, Ansi.Color couleur) {
         this.nom = nom;
+        this.couleur = couleur;
     }
 }
