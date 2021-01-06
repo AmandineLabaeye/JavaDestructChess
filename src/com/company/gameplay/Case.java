@@ -1,5 +1,8 @@
 package com.company.gameplay;
 
+/**
+ * Une case du plateau, qui peut être libre, détruite ou occupée.
+ */
 public class Case {
 
     private Joueur occupant;
@@ -14,7 +17,7 @@ public class Case {
     }
 
     /**
-     * @return true si la case n'est pas occupé ni détruite
+     * @return true si la case n'est ni occupé ni détruite
      */
     public boolean estLibre() {
         return !detruite && occupant == null;

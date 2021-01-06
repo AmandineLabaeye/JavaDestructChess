@@ -6,9 +6,19 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Arrays;
 import java.util.Iterator;
 
+/**
+ * Représente le plateau de jeu, où chaque case est représenté par une coordonné commençant en haut a gauche.
+ * Cette classe peut être itérée dans un foreach
+ */
 public class Plateau implements Iterable<Case[]> {
 
+    /**
+     * Taille horizontale du plateau
+     */
     public static final int TAILLE_X = 11;
+    /**
+     * Taille verticale du plateau
+     */
     public static final int TAILLE_Y = 10;
 
     private final Case[][] plateau;
