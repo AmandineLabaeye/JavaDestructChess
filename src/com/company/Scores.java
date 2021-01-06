@@ -17,7 +17,7 @@ public class Scores {
     public static void menuEntete() {
 
         // Message de bienvenue
-        System.out.println(ansi().reset().fg(Ansi.Color.YELLOW).a("********************************************************"));
+        System.out.println(ansi().fg(Ansi.Color.YELLOW).a("********************************************************"));
         System.out.println("*                                                      *");
         System.out.println("*            Bienvenue sur le menu des scores          *");
         System.out.println("*                                                      *");
@@ -42,42 +42,40 @@ public class Scores {
         };
 
         // Sous menu du score
-        System.out.println(ansi().reset().fg(Ansi.Color.WHITE).a("* Veuillez saisir la lettre de l'option voulu               *"));
-        System.out.println(ansi().reset().fg(Ansi.Color.BLUE).a("* - D : Voir le score (Du meilleur au moins fort)           *"));
-        System.out.println(ansi().reset().fg(Ansi.Color.MAGENTA).a("* - C : Voir le score croissant (Du moins fort au meilleur) *"));
-        System.out.println(ansi().reset().fg(Ansi.Color.GREEN).a("* - M : Retour au menu principal                            *"));
-        System.out.println(ansi().reset().fg(Ansi.Color.RED).a("* - E : Pour quitter l'application                          *"));
+        System.out.println(ansi().fg(Ansi.Color.WHITE).a("* Veuillez saisir la lettre de l'option voulu               *"));
+        System.out.println(ansi().fg(Ansi.Color.BLUE).a("* - D : Voir le score (Du meilleur au moins fort)           *"));
+        System.out.println(ansi().fg(Ansi.Color.MAGENTA).a("* - C : Voir le score croissant (Du moins fort au meilleur) *"));
+        System.out.println(ansi().fg(Ansi.Color.GREEN).a("* - M : Retour au menu principal                            *"));
+        System.out.println(ansi().fg(Ansi.Color.RED).a("* - E : Pour quitter l'application                          *").reset());
 
 
         //On récupérer et demande à l'utilisateur d'entrée son choix
         Scanner scanner = new Scanner(System.in);
-        String saisieUtilisateur = scanner.nextLine();
+        String saisieUtilisateur = scanner.nextLine().toLowerCase();
 
-        // On vérifie l'entrée de l'utilisateur, on vérifie qu'il entre au moins une option parmis toutes celle proposé
-        if (saisieUtilisateur.equals("c") || saisieUtilisateur.equals("d") || saisieUtilisateur.equals("e") || saisieUtilisateur.equals("m") || saisieUtilisateur.equals("M") || saisieUtilisateur.equals("C") || saisieUtilisateur.equals("D") || saisieUtilisateur.equals("E")) {
-
-            // On réalise un switch par rapport à la variable qui récupère la saisie de l'utilisateur
-            switch (saisieUtilisateur) {
-                // Si l'option entrée est C alors on lui affiche la liste des scores par ordre croissant
-                case "c", "C" -> {
-                    affichageScoreDecroissant(monTableau);
-                }
-                // Si l'option entrée est D alors on lui affiche la liste des scores par ordre décroissant
-                case "d", "D" -> {
-                    affichageScoreCroissant(monTableau);
-                }
-                // Si l'option entrée est M alors on lui affiche le menu principal du jeu
-                case "m", "M" -> {
-                    Menu menu = new Menu();
-                    menu.menu();
-                }
-                // Si l'option entrée est E alors il quitte l'application
-                case "e", "E" -> System.out.println(ansi().reset().fg(Ansi.Color.RED).a("Vous avez quitté l'application."));
+        // On réalise un switch par rapport à la variable qui récupère la saisie de l'utilisateur
+        switch (saisieUtilisateur) {
+            // Si l'option entrée est C alors on lui affiche la liste des scores par ordre croissant
+            case "c" -> {
+                affichageScoreDecroissant(monTableau);
             }
-        } else {
-            // On lui indique qu'il n'a pas entrée l'une des propositions affichée
-            System.out.println(ansi().reset().fg(Ansi.Color.RED).a("Vous devez entrer une des propositions demandées"));
-            menuScore();
+            // Si l'option entrée est D alors on lui affiche la liste des scores par ordre décroissant
+            case "d" -> {
+                affichageScoreCroissant(monTableau);
+            }
+            // Si l'option entrée est M alors on lui affiche le menu principal du jeu
+            case "m" -> {
+                Menu menu = new Menu();
+                menu.menu();
+            }
+            // Si l'option entrée est E alors il quitte l'application
+            case "e" -> System.out.println(ansi().fg(Ansi.Color.RED).a("Vous avez quitté l'application.").reset());
+
+            default -> {
+                // On lui indique qu'il n'a pas entrée l'une des propositions affichée
+                System.out.println(ansi().fg(Ansi.Color.RED).a("Vous devez entrer une des propositions demandées").reset());
+                menuScore();
+            }
         }
 
     }
@@ -89,7 +87,7 @@ public class Scores {
         System.out.println("Tableau de scores : (Ordre Décroissant)");
 
         for (int i = 0; i < 10; i++) {
-            System.out.println(ansi().reset().fg(Ansi.Color.BLUE).a(monTableau[i][0] + ", " + monTableau[i][1]));
+            System.out.println(ansi().fg(Ansi.Color.BLUE).a(monTableau[i][0] + ", " + monTableau[i][1]));
         }
 
         menuScore();
@@ -104,7 +102,7 @@ public class Scores {
 
         //
         for (int i = monTableau.length - 1; i >= 0; i--) {
-            System.out.println(ansi().reset().fg(Ansi.Color.BLUE).a(monTableau[i][0] + ", " + monTableau[i][1]));
+            System.out.println(ansi().fg(Ansi.Color.BLUE).a(monTableau[i][0] + ", " + monTableau[i][1]));
         }
 
         menuScore();
