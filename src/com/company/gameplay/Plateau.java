@@ -36,58 +36,18 @@ public class Plateau implements Iterable<Case[]> {
 
     /**
      * Récupère une case adjacent au coordonnés dans la direction spécifié
-     * @param direction La direction dans la quel recherché
+     * @param direction La direction dans la quelle rechercher
      * @param x Coordonné x, en partant de la gauche
      * @param y Coordonné y, en partant du haut
      * @return La case trouvé, sinon null
      */
     public @Nullable Case getAdjacente(Direction direction, int x, int y){
         return switch (direction){
-            case GAUCHE -> gauche(x, y);
-            case BAS -> bas(x, y);
-            case HAUT -> haut(x, y);
-            case DROITE -> droite(x, y);
+            case GAUCHE -> getCase(--x, y);
+            case BAS -> getCase(x, ++y);
+            case HAUT -> getCase(x, --y);
+            case DROITE -> getCase(++x, y);
         };
-    }
-
-    /**
-     * Récupère la case situé en haut des coordonnés donnés
-     * @param x Coordonné x, en partant de la gauche
-     * @param y Coordonné y, en partant du haut
-     * @return La case trouvé, sinon null
-     */
-    public @Nullable Case haut(int x, int y) {
-        return getCase(x, --y);
-    }
-
-    /**
-     * Récupère la case situé en bas des coordonnés donnés
-     * @param x Coordonné x, en partant de la gauche
-     * @param y Coordonné y, en partant du haut
-     * @return La case trouvé, sinon null
-     */
-    public @Nullable Case bas(int x, int y) {
-        return getCase(x, ++y);
-    }
-
-    /**
-     * Récupère la case situé a gauche des coordonnés donnés
-     * @param x Coordonné x, en partant de la gauche
-     * @param y Coordonné y, en partant du haut
-     * @return La case trouvé, sinon null
-     */
-    public @Nullable Case gauche(int x, int y) {
-        return getCase(--x, y);
-    }
-
-    /**
-     * Récupère la case situé a droite des coordonnés donnés
-     * @param x Coordonné x, en partant de la gauche
-     * @param y Coordonné y, en partant du haut
-     * @return La case trouvé, sinon null
-     */
-    public @Nullable Case droite(int x, int y) {
-        return getCase(++x, y);
     }
 
     /**

@@ -3,13 +3,10 @@ package com.company.gameplay;
 import com.company.EntreeUtilisateur;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
-import static org.fusesource.jansi.Ansi.ansi;
 import static com.company.Main.s;
+import static org.fusesource.jansi.Ansi.ansi;
 
 /**
  * Class de base du gameplay
@@ -37,19 +34,72 @@ public class Jeu {
         // On commence par demander à chaque joueur ou il veut se placer
         for (Joueur joueur : joueurVivants) {
             dessiner(true);
-            System.out.println(ansi().bg(joueur.couleur).a(joueur.nom).a(s(" choisissez votre case de départ")).reset());
+            System.out.println(ansi().fg(joueur.couleur).a(joueur.nom).a(s(" choisissez votre case de départ")).reset());
             Case depart = demanderCase();
-            placerJoueur(joueur, depart.x, depart.y);
+            placerJoueur(joueur, depart);
+        }
+
+        Iterator<Joueur> iterator = joueurVivants.listIterator();
+
+        while (joueurVivants.size() > 0) {
+            Joueur joueur = iterator.next();
+
+            dessiner(false);
+
+            System.out.println(ansi().fg(joueur.couleur).a("C'est au tour de " + joueur.nom).reset());
+
+            if (!peuxJoue(joueur)) {
+                iterator.remove();
+                System.out.println(ansi().bgBrightRed().fgBlack().a(s("Vous êtes encerclé! Vous ne pouvez plus vous déplacer jusqu'a la fin de la partie.")).reset());
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException ignored) { }
+
+                continue;
+            }
+
+            System.out.println(
+                    s("Choisissez un direction dans laquelle vous déplacer\n") +
+                    ansi().fgBrightBlack().a("<: Q\t^: Z\tv: S\t>: D")
+            );
+
+            Case ancienneCase = plateau.getCase(joueur.posX, joueur.posY);
+            Case nouvelleCase = demanderDeplacement(joueur);
+
+            ancienneCase.liberer();
+            placerJoueur(joueur, nouvelleCase);
+
+            dessiner(true);
+            System.out.println(s("Choisissez une case a détruire"));
+
+            demanderCase().detruire();
+
+            if (!iterator.hasNext()) {
+                iterator = joueurVivants.listIterator();
+            }
         }
 
         dessiner(false);
     }
 
     /**
+     * Test si le joueur peux effectué un déplacement
+     */
+    private boolean peuxJoue(Joueur joueur) {
+        for (Direction direction : Direction.values()) {
+            Case c = plateau.getAdjacente(direction, joueur.posX, joueur.posY);
+            if (c != null && c.estLibre()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Dessiner le plateau dans la console
      * @param afficherCaseIndex Faut il afficher l'index des cases vides?
      */
-    public void dessiner(boolean afficherCaseIndex){
+    public void dessiner(boolean afficherCaseIndex) {
         StringBuilder sb = new StringBuilder();
 
         int i = 1; // Index de la case
@@ -69,7 +119,7 @@ public class Jeu {
                 if (c.estLibre()) {
                     if (afficherCaseIndex){
                         // On affiche l'index de la case si besoin
-                        sb.append(String.format("%02d", i));
+                        sb.append(ansi().fgBrightBlack().a(String.format("%02d", i)).reset());
                     }
                     else {
                         // Sinon on affiche des espaces
@@ -105,13 +155,12 @@ public class Jeu {
     /**
      * Place un joueur à une cordonné et marque la case en question comme occupé par le joueur
      * @param joueur Le joueur a placer
-     * @param x La coordonné x où placer le joueur
-     * @param y La coordonné y où placer le joueur
+     * @param c La case sur laquelle déplacer le joueur
      */
-    private void placerJoueur(Joueur joueur, int x, int y) {
-        plateau.getCase(x, y).setOccupant(joueur);
-        joueur.posX = x;
-        joueur.posY = y;
+    private void placerJoueur(Joueur joueur, Case c) {
+        c.setOccupant(joueur);
+        joueur.posX = c.x;
+        joueur.posY = c.y;
     }
 
     /**
@@ -129,18 +178,50 @@ public class Jeu {
 
         Case c = plateau.getCase(x, y);
 
-        if (c == null) {
-            // Si l'index est en dehors du plateau, redemander
-            System.out.println(ansi().fgBrightRed().a("Cette case n'existe pas").reset());
+        if (!verifierCase(c)) {
             return demanderCase();
+        }
+        return c;
+    }
+
+    private Case demanderDeplacement(Joueur joueur) {
+        char choix = EntreeUtilisateur.getChar();
+        Direction direction = switch (choix) {
+            case 'z' -> Direction.HAUT;
+            case 'q' -> Direction.GAUCHE;
+            case 's' -> Direction.BAS;
+            case 'd' -> Direction.DROITE;
+            default -> null;
+        };
+
+        if (direction == null) {
+            System.out.println(s("Entrée incorrecte"));
+            return demanderDeplacement(joueur);
+        }
+
+        Case c = plateau.getAdjacente(direction, joueur.posX, joueur.posY);
+
+        if (!verifierCase(c)) {
+            return demanderDeplacement(joueur);
+        }
+
+        return c;
+
+    }
+
+    private boolean verifierCase(Case c) {
+        if (c == null) {
+            // Si la case est en null, ça veux dire que le joueur a choisi une case en dehors du tableau
+            System.out.println(ansi().fgBrightRed().a("Il n'y a pas de case ici").reset());
+            return false;
         }
 
         if (c.estLibre()) {
-            // Si la case est libre, on la renvoie
-            return c;
+            // La case est libre
+            return true;
         }
 
-        // Sinon on redemande
+        // La case n'est pa libre
         if (c.estDetruite()) {
             // Texte si la case est détruite
             System.out.println(ansi().fgBrightRed().a(s("Cette case est détruite")).reset());
@@ -150,7 +231,7 @@ public class Jeu {
             Joueur joueur = c.getOccupant();
             System.out.println(ansi().fgBrightRed().a(s("Cette case est occupé par ")).fg(joueur.couleur).a(c.getOccupant().nom).reset());
         }
-        return demanderCase();
+        return false;
     }
 
 }
