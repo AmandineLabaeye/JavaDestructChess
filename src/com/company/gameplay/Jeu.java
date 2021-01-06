@@ -31,7 +31,7 @@ public class Jeu {
     public void jouer() {
         for (Joueur joueur : joueurVivants) {
             dessiner(true);
-            System.out.println(ansi().bg(joueur.couleur).a(joueur.nom).a(" choisissez votre case de départ").reset());
+            System.out.println(ansi().bg(joueur.couleur).a(joueur.nom).a(s(" choisissez votre case de départ")).reset());
             Case depart = demanderCase();
             placerJoueur(joueur, depart.x, depart.y);
         }
@@ -66,7 +66,6 @@ public class Jeu {
                 }
                 else {
                     Joueur joueur = c.getOccupant();
-                    //sb.append(ansi().fg(c.getOccupant().couleur).a(new String("██".getBytes(StandardCharsets.UTF_8))).reset());
                     sb.append(ansi().bg(joueur.couleur).a(joueur.nom.substring(0, 2)).reset());
                 }
 
