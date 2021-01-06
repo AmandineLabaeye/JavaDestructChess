@@ -16,10 +16,12 @@ public class Jeu {
     private final Plateau plateau = new Plateau();
     private final List<Joueur> joueurVivants;
 
+    private final int nbJoueurs;
+
     public Jeu(Collection<Joueur> joueurs) {
-        /* Initialisation de la liste de joueurs.
-         */
+        // Initialisation de la liste de joueurs.
         joueurVivants = new LinkedList<>(joueurs);
+        nbJoueurs = joueurs.size();
     }
 
     public Jeu(Joueur[] joueurs) {
@@ -41,7 +43,7 @@ public class Jeu {
 
         Iterator<Joueur> iterator = joueurVivants.listIterator();
 
-        while (joueurVivants.size() > 0) {
+        while (joueurVivants.size() > 1) {
             Joueur joueur = iterator.next();
 
             dessiner(false);
@@ -50,6 +52,10 @@ public class Jeu {
 
             if (!peuxJoue(joueur)) {
                 iterator.remove();
+                if (joueurVivants.size() == 1) {
+                    continue;
+                }
+
                 System.out.println(ansi().bgBrightRed().fgBlack().a(s("Vous êtes encerclé! Vous ne pouvez plus vous déplacer jusqu'a la fin de la partie.")).reset());
                 try {
                     Thread.sleep(500);
@@ -80,6 +86,13 @@ public class Jeu {
         }
 
         dessiner(false);
+
+        Joueur gagnant = joueurVivants.get(0);
+
+        System.out.println(s(
+                "Tous les joueurs sont encerclés!\n" +
+                ansi().fg(gagnant.couleur).a(gagnant.nom).reset() + " gagne la partie."
+        ));
     }
 
     /**
