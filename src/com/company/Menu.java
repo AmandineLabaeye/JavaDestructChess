@@ -40,13 +40,13 @@ public class Menu {
             if (saisieUtilisateur.equals("e") || saisieUtilisateur.equals("E")) { // Si l'utilisateur appuie sur e ou E, cela le fait sortir de l'application
                 System.out.println("Vous sortez de l'application");
             } else if (saisieUtilisateur.equals("m") || saisieUtilisateur.equals("M")) { // Sinon si il appuie sur m ou M, cela le fait revenir au menu principal
-                System.out.println("Vous revenez au menu principal");
+                menu();
             } else if (saisieUtilisateur.equals("r") || saisieUtilisateur.equals("R")) { // Sinon si il appuie sur r ou R, cela affiche les règles
                 affichageRegles();
             } else if (saisieUtilisateur.equals("L") || saisieUtilisateur.equals("l")) { // Sinon si il appuie sur l ou L, cela lance la partie
                 System.out.println("Début de la partie !");
             } else if (saisieUtilisateur.equals("S") || saisieUtilisateur.equals("s")) { // Sinon si il appuie sur s ou S, cela affiche le tableau des scores
-                System.out.println("Affichage du score...");
+                Scores scores = new Scores(); // Rappel de la class pour afficher le menu des scores
             }
 
         } else {
