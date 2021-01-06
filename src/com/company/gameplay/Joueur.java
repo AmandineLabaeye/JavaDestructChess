@@ -2,6 +2,10 @@ package com.company.gameplay;
 
 import org.fusesource.jansi.Ansi;
 
+/**
+ * Joueur représenté par un nom et une couleur immuable.
+ * Contient également des cordonnées.
+ */
 public class Joueur {
 
     public final String nom;

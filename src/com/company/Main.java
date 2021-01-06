@@ -1,5 +1,8 @@
 package com.company;
 
+import com.company.gameplay.Jeu;
+import com.company.gameplay.Joueur;
+import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.AnsiConsole;
 
 import java.nio.charset.StandardCharsets;
@@ -7,7 +10,12 @@ import java.nio.charset.StandardCharsets;
 public class Main {
 
     public static void main(String[] args) {
-        AnsiConsole.systemInstall();
+        //AnsiConsole.systemInstall();
+
+
+
+        new Jeu(new Joueur[]{new Joueur("J1", Ansi.Color.BLUE), new Joueur("J2", Ansi.Color.YELLOW)}).jouer();
+
         Menu menu = new Menu();
         //Affichage de l'en-tête du menu
         menu.enteteMenu();

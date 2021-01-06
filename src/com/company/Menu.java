@@ -52,7 +52,7 @@ public class Menu {
                 break;
 
             case "s": // Sinon si il appuie sur s ou S, cela affiche le tableau des scores
-                Scores scores = new Scores(); // Rappel de la class pour afficher le menu des scores
+                Scores.AppelMenu(); // Rappel de la class pour afficher le menu des scores
                 break;
 
             default: //Si l'utilisateur ne rentre pas d'option valide

@@ -9,7 +9,7 @@ import static org.fusesource.jansi.Ansi.ansi;
 
 public class Scores {
 
-    public Scores() { // Constructeur qui rappel la fonction menu et Entete afin de les afficher au rappel de la class
+    public static void AppelMenu() { // Constructeur qui rappel la fonction menu et Entete afin de les afficher au rappel de la class
         menuEntete();
         menuScore();
     }
@@ -42,8 +42,10 @@ public class Scores {
         };
 
         // Sous menu du score
+
         System.out.println(ansi().fg(Ansi.Color.WHITE).a("Veuillez saisir la lettre de l'option voulu \n"));
         System.out.println(ansi().fg(Ansi.Color.BLUE).a("* - D : Voir le score (Du meilleur au moins fort)"));
+
         System.out.println(ansi().fg(Ansi.Color.MAGENTA).a("* - C : Voir le score croissant (Du moins fort au meilleur)"));
         System.out.println(ansi().fg(Ansi.Color.GREEN).a("* - M : Retour au menu principal"));
         System.out.println(ansi().fg(Ansi.Color.RED).a("* - E : Pour quitter l'application").reset());
@@ -65,8 +67,7 @@ public class Scores {
             }
             // Si l'option entrée est M alors on lui affiche le menu principal du jeu
             case "m" -> {
-                Menu menu = new Menu();
-                menu.menu();
+                Menu.menu();
             }
             // Si l'option entrée est E alors il quitte l'application
             case "e" -> System.out.println(ansi().fg(Ansi.Color.RED).a("Vous avez quitté l'application.").reset());
