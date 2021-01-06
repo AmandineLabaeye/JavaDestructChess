@@ -7,6 +7,7 @@ import java.util.Scanner;
 import static org.fusesource.jansi.Ansi.ansi;
 
 public class Menu {
+
     public static void enteteMenu() {
         // Message de Bienvenue
         System.out.println(ansi().reset().fg(Ansi.Color.YELLOW).a("********************************************************"));
@@ -48,7 +49,7 @@ public class Menu {
                 break;
 
             case "s": // Sinon si il appuie sur s ou S, cela affiche le tableau des scores
-                Scores scores = new Scores(); // Rappel de la class pour afficher le menu des scores
+                Scores.AppelMenu(); // Rappel de la class pour afficher le menu des scores
                 break;
 
             default: //Si l'utilisateur ne rentre pas d'option valide
