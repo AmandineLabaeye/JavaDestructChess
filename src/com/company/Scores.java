@@ -21,10 +21,10 @@ public class Scores {
         System.out.println("*                                                      *");
         System.out.println("*            Bienvenue sur le menu des scores          *");
         System.out.println("*                                                      *");
-        System.out.println("********************************************************");
+        System.out.println("********************************************************\n");
 
     }
-
+    // Création de la fonction " menuScore "
     public static void menuScore() {
 
         // Tableau temporaire de la liste des joueurs et des scores correspondant au nom
@@ -42,7 +42,7 @@ public class Scores {
         };
 
         // Sous menu du score
-        System.out.println(ansi().fg(Ansi.Color.WHITE).a("* Veuillez saisir la lettre de l'option voulu"));
+        System.out.println(ansi().fg(Ansi.Color.WHITE).a("Veuillez saisir la lettre de l'option voulu \n"));
         System.out.println(ansi().fg(Ansi.Color.BLUE).a("* - D : Voir le score (Du meilleur au moins fort)"));
         System.out.println(ansi().fg(Ansi.Color.MAGENTA).a("* - C : Voir le score croissant (Du moins fort au meilleur)"));
         System.out.println(ansi().fg(Ansi.Color.GREEN).a("* - M : Retour au menu principal"));
@@ -79,17 +79,19 @@ public class Scores {
         }
 
     }
-
+    // Création de la fonction " affichageScoreDecroissant "
     public static void affichageScoreDecroissant(String[][] monTableau) {
 
         // Affichage des scores dans l'odre décroissant (meilleur au moins fort)
 
         System.out.println("Tableau de scores : (Ordre Décroissant)");
 
+        // Boucle qui affiche le tableau multidimensionnel dans l'ordre
         for (int i = 0; i < 10; i++) {
             System.out.println(ansi().fg(Ansi.Color.BLUE).a(monTableau[i][0] + ", " + monTableau[i][1]));
         }
 
+        // Affichage du menu score
         menuScore();
 
     }
@@ -100,11 +102,12 @@ public class Scores {
 
         System.out.println("Tableau de scores : (Ordre Croissant)");
 
-        //
+        // Boucle qui affiche le tableau multidimensionnel à l'envers
         for (int i = monTableau.length - 1; i >= 0; i--) {
             System.out.println(ansi().fg(Ansi.Color.BLUE).a(monTableau[i][0] + ", " + monTableau[i][1]));
         }
 
+        // Affichage du menu score
         menuScore();
 
     }
