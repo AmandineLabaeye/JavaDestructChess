@@ -34,6 +34,12 @@ public class AffichageScores {
     // Création de la fonction " menuScore "
     public static void menuScore() {
 
+        // Vérifie la taille de la liste Joueur si elle est égal à 0 alors on le renvoie au menu principal, car la liste est vide
+        if (Scores.getJoueurs().size() == 0) {
+            System.out.println(ansi().fgRed().a("Aucun joueur n'a été enregistré, retour au menu principal\n"));
+            return;
+        }
+
         // Sous menu du score
         System.out.println(ansi()
 
