@@ -5,7 +5,7 @@ import org.fusesource.jansi.Ansi;
 import java.io.Serializable;
 
 /**
- * Joueur représenté par un nom et une couleur immuable.
+ * Joueur représenté par un nom et une couleur immuable, contient son score.
  * Contient également des cordonnées.
  */
 public class Joueur implements Serializable {

@@ -32,7 +32,7 @@ public class Menu {
                 .fgBlue().a("|") .fgCyan().a(" Veuillez saisir une option ci-dessous                 ").fgBlue().a("|\n")
                 .fgBlue().a("|").fgRed().a(s(" * - R : Voir les règles                               ")).fgBlue().a("|\n")
                 .fgBlue().a("|").fgGreen().a(" * - L : Lancer une partie                             ").fgBlue().a("|\n")
-                .fgBlue().a("|").fgYellow().a(" * - S : Afficher le score                             ").fgBlue().a("|\n")
+                .fgBlue().a("|").fgYellow().a(" * - S : Afficher les score                             ").fgBlue().a("|\n")
                 .fgBlue().a("|").fgBlue().a(" * - E : Sortir de l'application                       ").fgBlue().a("|\n")
                 .fgBlue().a(" =======================================================")
                 .reset());
@@ -95,7 +95,7 @@ public class Menu {
         int nbJoueurs = EntreeUtilisateur.getInt();
         // Vérification qu'il y en a le bon nombre
         if (nbJoueurs < 2 || nbJoueurs > 4) {
-            System.out.println(ansi().fgRed().a("Il peut y avoir entre 2 et 4 joueurs"));
+            System.out.println(ansi().fgRed().a("Il peut y avoir entre 2 et 4 joueurs").reset());
             appelLimite(Menu::choixPseudoCouleurs);
         }
 
@@ -114,7 +114,9 @@ public class Menu {
                 // Création d'une variable pour vérifier la couleur de l'utilisateur
                 Ansi.Color couleur = couleurVerif(pseudoUtilisateur);
                 // Ajout du nom et de la couleur dans le tableau (Crée un nouveau joueur)
-                joueurs[i] = new Joueur(pseudoUtilisateur, couleur);
+                Joueur nouveau = new Joueur(pseudoUtilisateur, couleur);
+                joueurs[i] = nouveau;
+                Scores.ajouterJoueur(nouveau);
             } else { // Si il existe
                 // On stock juste le joueur dans le tableau
                 joueurs[i] = joueur;
@@ -173,18 +175,18 @@ public class Menu {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Veuillez entrer le pseudo du joueur " + i);
         // Stockage de la valeur saisie par l'utilisateur
-        String pseudoUtilisateur = scanner.nextLine();
+        String pseudoUtilisateur = s(scanner.nextLine());
         // Condition : Si le pseudo < 2 caractères ou que le pseudo > 10 alors message d'erreur
         if (pseudoUtilisateur.length() < 2 || pseudoUtilisateur.length() > 10) {
 
-            System.out.println(ansi().fg(Ansi.Color.RED).a("Vous devez saisir un pseudo entre 2 caractères minimum et 10 caractères maximum").reset());
+            System.out.println(ansi().fg(Ansi.Color.RED).a(s("Vous devez saisir un pseudo entre 2 caractères minimum et 10 caractères maximum")).reset());
             // Rappel de la fonction ( en cas d'erreur )
             return appelLimite(Menu::pseudoVerif, i, joueurs);
 
-            // Vérification que les pseudos sont différents et que pour le premier joueur il peut choisir ce qu'il veut par rapport au tableau joeurs
+            // Vérification que les pseudos sont différents et que pour le premier joueur il peut choisir ce qu'il veut par rapport au tableau joueurs
         } else if (Arrays.stream(joueurs).anyMatch(joueur -> joueur != null && joueur.nom.equals(pseudoUtilisateur))) {
 
-            System.out.println(ansi().fg(Ansi.Color.RED).a("Ce joueur existe déjà, veuillez modifier votre pseudo").reset());
+            System.out.println(ansi().fg(Ansi.Color.RED).a(s("Ce joueur existe déjà, veuillez modifier votre pseudo")).reset());
             // Rappel de la fonction ( en cas d'erreur )
             return appelLimite(Menu::pseudoVerif, i, joueurs);
 

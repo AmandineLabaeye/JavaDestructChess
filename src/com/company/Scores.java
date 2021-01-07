@@ -15,13 +15,8 @@ public class Scores {
 
     // Fonction pour ajouter un joueur à la liste
     public static void ajouterJoueur(Joueur joueur) {
-
-        // ajoute un joueur
-        joueurs.add(joueur);
-
-        // appel de la fonction d'actualisation
-        actualiserScores();
-
+        // ajoute un joueur au début de la liste pour qu'elle reste dans l'ordre
+        joueurs.add(0, joueur);
     }
 
     public static Joueur chercheJoueur(String pseudoUtilisateur) {

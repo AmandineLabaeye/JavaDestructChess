@@ -1,8 +1,8 @@
 package com.company.gameplay;
 
 import com.company.EntreeUtilisateur;
+import com.company.Scores;
 
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -16,11 +16,12 @@ import static org.fusesource.jansi.Ansi.ansi;
 public class Jeu {
 
     private final Plateau plateau = new Plateau();
-    private final List<Joueur> joueurVivants;
+    private final List<Joueur> joueurs; // Tous les joueurs de la partie
+    private final List<Joueur> joueurVivants; // Les joueurs encore vivants
 
     public Jeu(Collection<Joueur> joueurs) {
         // Initialisation de la liste de joueurs.
-
+        this.joueurs = new ArrayList<>(joueurs);
         joueurVivants = new LinkedList<>(joueurs);
     }
 
@@ -59,7 +60,7 @@ public class Jeu {
 
             System.out.println(
                     s("Choisissez un direction dans laquelle vous déplacer\n") +
-                    ansi().fgBrightBlack().a("<: Q\t^: Z\tv: S\t>: D")
+                    ansi().fgBrightBlack().a("<: Q\t^: Z\tv: S\t>: D").reset()
             );
 
             // On stoke la case actuelle et récupère la nouvelle en fonction de ce que le joueur entre
@@ -91,16 +92,36 @@ public class Jeu {
         /* ** fin de la partie ** */
 
         dessiner(false);
-
-        // La liste ne contient plus que le joueur gagnant
-        Joueur gagnant = joueurVivants.get(0);
-
-        System.out.println(s(
-                "Tous les joueurs sont encerclés!\n" +
-                ansi().fg(gagnant.couleur).a(gagnant.nom).reset() + " gagne la partie."
-        ));
+        partieTerminee(joueurVivants.get(0));
     }
 
+    private void partieTerminee(Joueur gagnant){
+        List<Joueur> perdants = joueurs.stream().filter(joueur -> joueur != gagnant).collect(Collectors.toList());
+        System.out.println(
+                s(ansi().fg(gagnant.couleur).a(gagnant.nom).fgBrightYellow().a(" gagne la partie!\n").reset() +
+                "Il remporte " + ansi().fgBrightBlue().a(5).reset().a(" points")
+        ));
+
+        if ((perdants.size() > 1)) {
+            System.out.println(("Les autres joueurs perdent " + ansi().fgBrightBlue().a(3).reset().a(" points")));
+        }
+        else {
+            Joueur perdant = perdants.get(0);
+            System.out.println(ansi().fg(perdant.couleur).a(perdant.nom).reset().a(" perd ").fgBrightBlue().a(3).reset().a(" points"));
+        }
+
+        // Ajout et retraits des points
+        for (Joueur joueur : joueurs) {
+            if (joueur == gagnant) {
+                joueur.score += 5;
+            }
+            else {
+                joueur.score -= 3;
+            }
+        }
+
+        Scores.actualiserScores();
+    }
     /**
      * Test si le joueur peux effectué un déplacement
      */
@@ -139,7 +160,7 @@ public class Jeu {
         // On attend une seconde que le joueur puisse lire le message sauf si la partie est terminé
         if ((joueurVivants.size() > 0)) {
             try {
-                Thread.sleep(1000);
+                Thread.sleep(2500);
             } catch (InterruptedException ignored) { }
         }
     }
@@ -177,7 +198,7 @@ public class Jeu {
                 }
                 else if(c.estDetruite()) {
                     // Dessin si la case est détruite
-                    sb.append(new String("░░".getBytes(StandardCharsets.UTF_8)));
+                    sb.append(s("░░"));
                 }
                 else {
                     // Dessin si la case est occupé par un joueur
