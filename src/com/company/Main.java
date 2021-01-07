@@ -1,5 +1,8 @@
 package com.company;
 
+import org.fusesource.jansi.AnsiConsole;
+
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -8,6 +11,21 @@ import java.util.function.Supplier;
 public class Main {
 
     public static void main(String[] args) {
+        //#region Code spécifique a windows
+        if (System.getProperty("os.name").toLowerCase().contains("win")) {
+            // Fait fonctionner jansi, pose apparent des problèmes sur mac et dans IntelliJ
+            if (Main.class.getResource("Main.class").toString().startsWith("jar:")) // Détecte si le program est lancé depuis un jar
+            {
+                AnsiConsole.systemInstall();
+            }
+            // Force la console en UTF-8
+            try {
+                new ProcessBuilder("cmd.exe", "/c", "chcp", "65001>nul").inheritIO().start().waitFor();
+            } catch (IOException | InterruptedException e) {
+                System.out.println("Vérifier que votre terminale est bien en UTF-8");
+            }
+        }
+        //#endregion
 
         //Affichage de l'en-tête du menu
         Menu.enteteMenu();
@@ -28,6 +46,8 @@ public class Main {
     public static String s(String str){
         return new String(str.getBytes(StandardCharsets.UTF_8));
     }
+
+    //#region appelLimite
 
     /**
      * Appel la fonction passé, a partir d'une certaine profondeur de la pile d'appel, quitte le program
@@ -104,4 +124,5 @@ public class Main {
         // Appelle de la fonction passé
         func.run();
     }
+    //#endregion
 }

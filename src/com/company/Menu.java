@@ -45,7 +45,7 @@ public class Menu {
                 return false;
 
             case "r": // Sinon si il appuie sur r ou R, cela affiche les règles
-                Regles();
+                regles();
                 break;
 
             case "l": // Sinon si il appuie sur l ou L, cela lance la partie
@@ -54,7 +54,7 @@ public class Menu {
                 break;
 
             case "s": // Sinon si il appuie sur s ou S, cela affiche le tableau des scores
-                Scores.AppelMenu(); // Rappel de la class pour afficher le menu des scores
+                Scores.appelMenu(); // Rappel de la class pour afficher le menu des scores
                 break;
 
             default: //Si l'utilisateur ne rentre pas d'option valide
@@ -65,7 +65,7 @@ public class Menu {
         return true;
     }
 
-    public static void Regles() {
+    public static void regles() {
         // Affichage des règles dans la console
         System.out.println(ansi().fg(Ansi.Color.YELLOW).a("Bonjour et bienvenue dans [DestructChess] ! \n" +
                 "Le but est simple ! Bloquez votre / vos adversaire(s) afin de décrocher la victoire !  \n" +
@@ -74,6 +74,7 @@ public class Menu {
                 "Vous êtes désormais prêts à jouer à [DestructChess] !").reset());
 
     }
+
     // Création d'une nouvelle fonction qui permet de choisir le pseudo et la couleur des joueurs
     public static void nomUtilisateur() {
         // Initialisation du tableau des joueurs
@@ -160,5 +161,4 @@ public class Menu {
         return pseudoUtilisateur;
     }
 }
-
 

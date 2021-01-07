@@ -10,7 +10,8 @@ import static org.fusesource.jansi.Ansi.ansi;
 
 public class Scores {
 
-    public static void AppelMenu() { // Constructeur qui rappel la fonction menu et Entete afin de les afficher au rappel de la class
+    // Affiche l'entête du menu et le menu des scores
+    public static void appelMenu() {
         menuEntete();
         menuScore();
     }
