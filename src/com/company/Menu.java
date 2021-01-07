@@ -4,6 +4,7 @@ import com.company.gameplay.Jeu;
 import com.company.gameplay.Joueur;
 import org.fusesource.jansi.Ansi;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 import static com.company.Main.appelLimite;
@@ -80,7 +81,7 @@ public class Menu {
         // Boucle qui permet de créer deux utilisateurs ( pseudo + couleur )
         for (int i = 0; i < 2; i++) {
             // Création d'une variable pour vérifier la taille du pseudo de l'utilisateur
-            String pseudoUtilisateur = pseudoVerif(i + 1);
+            String pseudoUtilisateur = pseudoVerif(i + 1, joueurs);
             // Création d'une variable pour vérifier la couleur de l'utilisateur
             Ansi.Color couleur = couleurVerif(pseudoUtilisateur);
             // Ajout du nom et de la couleur dans le tableau
@@ -132,7 +133,7 @@ public class Menu {
 
     }
     // Création d'une fonction pour vérifier la taille du pseudo
-    public static String pseudoVerif(int i) {
+    public static String pseudoVerif(int i, Joueur[] joueurs) {
         // Initialisation du scanner
         Scanner scanner = new Scanner(System.in);
         System.out.println("Veuillez entrer le pseudo du joueur " + i);
@@ -140,11 +141,21 @@ public class Menu {
         String pseudoUtilisateur = scanner.nextLine();
         // Condition : Si le pseudo < 2 caractères ou que le pseudo > 10 alors message d'erreur
         if (pseudoUtilisateur.length() < 2 || pseudoUtilisateur.length() > 10) {
-            // Cas d'arrêt de la récursivité
+
             System.out.println(ansi().fg(Ansi.Color.RED).a("Vous devez saisir un pseudo entre 2 caractères minimum et 10 caractères maximum").reset());
             // Rappel de la fonction ( en cas d'erreur )
-            return appelLimite(Menu::pseudoVerif, i);
+            return appelLimite(Menu::pseudoVerif, i, joueurs);
+
+            // Vérification que les pseudos sont différents et que pour le premier joueur il peut choisir ce qu'il veut par rapport au tableau joeurs
+        } else if (Arrays.stream(joueurs).anyMatch(joueur -> joueur != null && joueur.nom.equals(pseudoUtilisateur))) {
+
+            System.out.println(ansi().fg(Ansi.Color.RED).a("Ce joueur existe déjà, veuillez modifier votre pseudo").reset());
+            // Rappel de la fonction ( en cas d'erreur )
+            return appelLimite(Menu::pseudoVerif, i, joueurs);
+
         }
+
+        // Cas d'arrêt de la récursivité
         // Retourne la variable pseudo
         return pseudoUtilisateur;
     }
