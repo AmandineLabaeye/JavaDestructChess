@@ -36,10 +36,14 @@ public class AffichageScores {
 
         // Sous menu du score
         System.out.println(ansi()
-                .fgCyan().a("Veuillez saisir une option ci-dessous \n")
-                .fgMagenta().a("* - C : Voir le score croissant (Du moins fort au meilleur)\n")
-                .fgGreen().a("* - D : Voir le score (Du meilleur au moins fort)\n")
-                .fgBlue().a("* - M : Retour au menu principal\n")
+
+                .fgBlue().a(" ==============================================================\n")
+                .fgBlue().a("| ").fgCyan().a("Veuillez saisir une option ci-dessous ").fgBlue().a("                       |\n")
+                .fgBlue().a("| ").fgMagenta().a("* - C : Voir le score croissant (Du meilleur au moins fort)").fgBlue().a("  |\n")
+                .fgBlue().a("| ").fgGreen().a("* - D : Voir le score (Du moins fort au meilleur)").fgBlue().a("            |\n")
+                .fgBlue().a("| ").fgBlue().a("* - M : Retour au menu principal").fgBlue().a("                             |\n")
+                .fgBlue().a(" ==============================================================\n")
+
         .reset());
 
 

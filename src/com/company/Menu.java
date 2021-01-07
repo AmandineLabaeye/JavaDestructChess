@@ -29,11 +29,11 @@ public class Menu {
         // Affichage des option
         System.out.println(ansi()
                 .fgBlue().a(" =======================================================\n")
-                .fgCyan().a("| Veuillez saisir une option ci-dessous                 |\n")
-                .fgRed().a(s("| * - R : Voir les règles                               |\n"))
-                .fgGreen().a("| * - L : Lancer une partie                             |\n")
-                .fgYellow().a("| * - S : Afficher le score                             |\n")
-                .fgBlue().a("| * - E : Sortir de l'application                       |\n")
+                .fgBlue().a("|") .fgCyan().a(" Veuillez saisir une option ci-dessous                 ").fgBlue().a("|\n")
+                .fgBlue().a("|").fgRed().a(s(" * - R : Voir les règles                               ")).fgBlue().a("|\n")
+                .fgBlue().a("|").fgGreen().a(" * - L : Lancer une partie                             ").fgBlue().a("|\n")
+                .fgBlue().a("|").fgYellow().a(" * - S : Afficher le score                             ").fgBlue().a("|\n")
+                .fgBlue().a("|").fgBlue().a(" * - E : Sortir de l'application                       ").fgBlue().a("|\n")
                 .fgBlue().a(" =======================================================")
                 .reset());
 
