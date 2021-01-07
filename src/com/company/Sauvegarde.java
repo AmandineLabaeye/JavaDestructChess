@@ -15,7 +15,6 @@ public class Sauvegarde {
 
     /**
      * Sauvegarder le tableau des scores
-     *
      * @param joueurs Le tableau à sauvegarder
      */
     public static void sauvegarder(List<Joueur> joueurs) throws IOException {
@@ -25,7 +24,6 @@ public class Sauvegarde {
 
     /**
      * Charger le tableau des scores
-     *
      * @return Le tableau présent dans le fichier de sauvegarde
      */
     public static List<Joueur> charger() throws IOException, ClassNotFoundException {

@@ -15,6 +15,7 @@ public class Joueur implements Serializable {
 
     public int score;
 
+    //transient: ignoré lors de la sérialisation
     public transient int posX;
     public transient int posY;
 

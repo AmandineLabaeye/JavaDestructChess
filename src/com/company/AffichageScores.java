@@ -3,13 +3,14 @@ package com.company;
 import com.company.gameplay.Joueur;
 import org.fusesource.jansi.Ansi;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 import static com.company.Main.appelLimite;
+import static com.company.Main.s;
 import static org.fusesource.jansi.Ansi.ansi;
 
+@SuppressWarnings("RedundantLabeledSwitchRuleCodeBlock")
 public class AffichageScores {
 
     // Affiche l'entête du menu et le menu des scores
@@ -36,7 +37,11 @@ public class AffichageScores {
 
         // Vérifie la taille de la liste Joueur si elle est égal à 0 alors on le renvoie au menu principal, car la liste est vide
         if (Scores.getJoueurs().size() == 0) {
-            System.out.println(ansi().fgRed().a("Aucun joueur n'a été enregistré, retour au menu principal\n"));
+            System.out.println(ansi().fgRed().a(s(
+                    "Aucun joueur n'a été enregistré\n" +
+                    "Appuyé sur ENTRER pour retourner au menu principale"
+            )));
+            new Scanner(System.in).nextLine();
             return;
         }
 

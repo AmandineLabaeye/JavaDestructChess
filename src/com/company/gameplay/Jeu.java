@@ -1,14 +1,13 @@
 package com.company.gameplay;
 
 import com.company.EntreeUtilisateur;
-import org.fusesource.jansi.Ansi;
 
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.company.Main.s;
 import static com.company.Main.appelLimite;
+import static com.company.Main.s;
 import static org.fusesource.jansi.Ansi.ansi;
 
 /**

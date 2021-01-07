@@ -3,7 +3,6 @@ package com.company;
 import com.company.gameplay.Jeu;
 import com.company.gameplay.Joueur;
 import org.fusesource.jansi.Ansi;
-import org.w3c.dom.ls.LSOutput;
 
 import java.util.Arrays;
 import java.util.Scanner;
@@ -12,6 +11,7 @@ import static com.company.Main.appelLimite;
 import static com.company.Main.s;
 import static org.fusesource.jansi.Ansi.ansi;
 
+//@SuppressWarnings("RedundantLabeledSwitchRuleCodeBlock")
 public class Menu {
 
     public static void enteteMenu() {
@@ -41,30 +41,27 @@ public class Menu {
         Scanner scanner = new Scanner(System.in);
         // Récupération de la saisie de l'utilisateur
         String saisieUtilisateur = scanner.nextLine().toLowerCase();
+
         // Création d'un switch pour la saisie de l'utilisateur
         switch (saisieUtilisateur) {
-
-            case "e": // Si l'utilisateur appuie sur e ou E, cela le fait sortir de l'application
+            // Si l'utilisateur appuie sur e ou E, cela le fait sortir de l'application
+            case "e" -> {
                 System.out.println(ansi().fgBrightRed().a("Vous sortez de l'application").reset());
                 return false;
-
-            case "r": // Sinon si il appuie sur r ou R, cela affiche les règles
+            }
+            // Sinon si il appuie sur r ou R, cela affiche les règles
+            case "r" -> {
                 regles();
-                break;
-
-            case "l": // Sinon si il appuie sur l ou L, cela lance la partie
+            }
+            // Sinon si il appuie sur l ou L, cela lance la partie
+            case "l" -> {
                 System.out.println(ansi().fgBrightMagenta().a(s("Début de la partie !")).reset());
                 choixPseudoCouleurs();
-                break;
-
-            case "s": // Sinon si il appuie sur s ou S, cela affiche le tableau des scores
-                AffichageScores.appelMenu(); // Rappel de la class pour afficher le menu des scores
-                break;
-
-            default: //Si l'utilisateur ne rentre pas d'option valide
-                System.out.println(ansi().fg(Ansi.Color.RED).a("Vous devez entrer une des options ci-dessus").reset());
-                break;
-
+            }
+            // Sinon si il appuie sur s ou S, cela affiche le tableau des scores
+            case "s" -> AffichageScores.appelMenu(); // Rappel de la class pour afficher le menu des scores
+            //Si l'utilisateur ne rentre pas d'option valide
+            default -> System.out.println(ansi().fg(Ansi.Color.RED).a("Vous devez entrer une des options ci-dessus").reset());
         }
         return true;
     }
@@ -80,11 +77,13 @@ public class Menu {
                 .fgBlue().a("==================================================\n")
         .reset());
 
-        System.out.println(ansi().fg(Ansi.Color.YELLOW).a("Le but est simple ! Bloquez votre / vos adversaire(s) afin de décrocher la victoire ! \n" +
+        System.out.println(ansi().fg(Ansi.Color.YELLOW).a(s(
+                "Le but est simple ! Bloquez votre / vos adversaire(s) afin de décrocher la victoire ! \n" +
                 "Vous débuterez la partie à côté de votre / vos ennemis, tour à tour vous devrez vous déplacer soit à la verticale, soit à l'horizontale, puis,\n" +
                 "après chaque déplacements, vous devrez détruire une case qui se trouve sur le plateau  \n" +
                 "Dès qu'un joueur se retrouve bloqué par des cases détruites ou des joueurs en haut, en bas, à droite et à gauche, il perd la partie. \n" +
-                "Vous êtes désormais prêts à jouer à [DestructChess] ! \n").reset());
+                "Vous êtes désormais prêts à jouer à [DestructChess] ! \n"
+        )).reset());
 
     }
 

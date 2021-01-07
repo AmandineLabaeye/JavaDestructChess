@@ -1,7 +1,5 @@
 package com.company;
 
-import com.company.gameplay.Joueur;
-import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.AnsiConsole;
 
 import java.io.IOException;
