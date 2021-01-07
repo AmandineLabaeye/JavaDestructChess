@@ -32,7 +32,7 @@ public class Menu {
                 .fgBlue().a("|") .fgCyan().a(" Veuillez saisir une option ci-dessous                 ").fgBlue().a("|\n")
                 .fgBlue().a("|").fgRed().a(s(" * - R : Voir les règles                               ")).fgBlue().a("|\n")
                 .fgBlue().a("|").fgGreen().a(" * - L : Lancer une partie                             ").fgBlue().a("|\n")
-                .fgBlue().a("|").fgYellow().a(" * - S : Afficher les score                             ").fgBlue().a("|\n")
+                .fgBlue().a("|").fgYellow().a(" * - S : Afficher les score                            ").fgBlue().a("|\n")
                 .fgBlue().a("|").fgBlue().a(" * - E : Sortir de l'application                       ").fgBlue().a("|\n")
                 .fgBlue().a(" =======================================================")
                 .reset());

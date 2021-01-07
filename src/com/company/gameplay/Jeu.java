@@ -45,7 +45,9 @@ public class Jeu {
             placerJoueur(joueur, depart);
         }
 
-        Iterator<Joueur> iterator = joueurVivants.listIterator();
+        // Initialise l'itérateur en commençant par un index aléatoire
+        Iterator<Joueur> iterator = joueurVivants.listIterator(new Random().nextInt(joueurVivants.size()));
+        boolean premierTour = true;
 
         // Boucle sur tous les joueurs tant qu'il en rete plus d'un en vie
         while (joueurVivants.size() > 1) {
@@ -54,7 +56,13 @@ public class Jeu {
             // Début du tour, on dessine le plateau
             dessiner(false);
 
-            System.out.println(ansi().fg(joueur.couleur).a("C'est au tour de " + joueur.nom).reset());
+            if (premierTour) {
+                System.out.println(ansi().fg(joueur.couleur).a(joueur.nom).a(", c'est a vous de commencer").reset());
+                premierTour = false;
+            }
+            else {
+                System.out.println(ansi().fg(joueur.couleur).a("C'est au tour de " + joueur.nom).reset());
+            }
 
             /* ** déplacement ** */
 
@@ -91,7 +99,6 @@ public class Jeu {
 
         /* ** fin de la partie ** */
 
-        dessiner(false);
         partieTerminee(joueurVivants.get(0));
     }
 
@@ -143,22 +150,24 @@ public class Jeu {
         if (elimines.size() == 0)
             return;
 
+        dessiner(false);
+
         // Retire tous les joueurs élimés de la liste
         joueurVivants.removeAll(elimines);
 
         // Affichage du message de défaite
         if (elimines.size() > 1) {
             System.out.println(
-                    ansi().bgBrightYellow().fgBlack().a("COMBO!\n").reset()
+                    ansi().bgBrightYellow().fgBlack().a("COMBO!\n").bgDefault()
                     .bgBrightYellow().a(elimines.size() + s( " joueurs sont encerclés! Ils sont éliminés.")).reset()
             );
         } else {
             Joueur elimine = elimines.get(0);
-            System.out.println(ansi().fg(elimine.couleur).a(elimine.nom).fgBrightRed().a(s( " est encerclés! Il est éliminés.")).reset());
+            System.out.println(ansi().fg(elimine.couleur).a(elimine.nom).fgBrightRed().a(s( " est encerclé! Il est éliminé.")).reset());
         }
 
-        // On attend une seconde que le joueur puisse lire le message sauf si la partie est terminé
-        if ((joueurVivants.size() > 0)) {
+        // On attend une 2.5s que le joueur puisse lire le message sauf si la partie est terminé, sauf si la partie est terminé
+        if ((joueurVivants.size() > 1)) {
             try {
                 Thread.sleep(2500);
             } catch (InterruptedException ignored) { }
