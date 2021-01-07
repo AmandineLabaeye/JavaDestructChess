@@ -49,7 +49,7 @@ public class Menu {
                 break;
 
             case "l": // Sinon si il appuie sur l ou L, cela lance la partie
-                System.out.println(ansi().fgBrightMagenta().a("Début de la partie !").reset());
+                System.out.println(ansi().fgBrightMagenta().a(s("Début de la partie !")).reset());
                 choixPseudoCouleurs();
                 break;
 
@@ -77,10 +77,20 @@ public class Menu {
 
     // Création d'une nouvelle fonction qui permet de choisir le pseudo et la couleur des joueurs
     public static void choixPseudoCouleurs() {
+        System.out.println("Combien de joueurs? (entre 2 et 4)");
+
+        // Demande du nombre de joueurs
+        int nbJoueurs = EntreeUtilisateur.getInt();
+        // Vérification qu'il y en a le bon nombre
+        if (nbJoueurs < 2 || nbJoueurs > 4) {
+            System.out.println(ansi().fgRed().a("Il peut y avoir entre y et 4 joueurs"));
+            appelLimite(Menu::choixPseudoCouleurs);
+        }
+
         // Initialisation du tableau des joueurs
-        Joueur[] joueurs = new Joueur[2];
+        Joueur[] joueurs = new Joueur[nbJoueurs];
         // Boucle qui permet de créer deux utilisateurs ( pseudo + couleur )
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < nbJoueurs; i++) {
             // Création d'une variable pour vérifier la taille du pseudo de l'utilisateur
             String pseudoUtilisateur = pseudoVerif(i + 1, joueurs);
             // Création d'une variable pour vérifier la couleur de l'utilisateur
