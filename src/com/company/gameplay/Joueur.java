@@ -11,6 +11,8 @@ public class Joueur {
     public final String nom;
     public final Ansi.Color couleur;
 
+    public int score;
+
     public int posX;
     public int posY;
 

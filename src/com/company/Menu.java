@@ -58,7 +58,7 @@ public class Menu {
                 break;
 
             case "s": // Sinon si il appuie sur s ou S, cela affiche le tableau des scores
-                Scores.appelMenu(); // Rappel de la class pour afficher le menu des scores
+                AffichageScores.appelMenu(); // Rappel de la class pour afficher le menu des scores
                 break;
 
             default: //Si l'utilisateur ne rentre pas d'option valide
@@ -71,23 +71,18 @@ public class Menu {
 
     public static void regles() {
         // Affichage des règles dans la console
-        String enteteRegle = "==================================================";
-        String texteRegle = s("| Bienvenue dans les règles de [DestructChess] ! |");
 
-        TexteAlignement texteAlignement = new TexteAlignement(170, TexteAlignement.alignement.CENTRE);
-
-        System.out.println(ansi().fg(Ansi.Color.BLUE).a(texteAlignement.format(enteteRegle)).reset());
-        System.out.println(ansi().fg(Ansi.Color.GREEN).a(texteAlignement.format(texteRegle)).reset());
-        System.out.println(ansi().fg(Ansi.Color.BLUE).a(texteAlignement.format(enteteRegle)).reset());
+        System.out.println(ansi()
+                .fgBlue().a("==================================================")
+                .fgGreen().a(s("| Bienvenue dans les règles de [DestructChess] ! |"))
+                .fgBlue().a("==================================================\n")
+        .reset());
 
         System.out.println(ansi().fg(Ansi.Color.YELLOW).a("Le but est simple ! Bloquez votre / vos adversaire(s) afin de décrocher la victoire ! \n" +
                 "Vous débuterez la partie à côté de votre / vos ennemis, tour à tour vous devrez vous déplacer soit à la verticale, soit à l'horizontale, puis,\n" +
                 "après chaque déplacements, vous devrez détruire une case qui se trouve sur le plateau  \n" +
                 "Dès qu'un joueur se retrouve bloqué par des cases détruites ou des joueurs en haut, en bas, à droite et à gauche, il perd la partie. \n" +
                 "Vous êtes désormais prêts à jouer à [DestructChess] ! \n").reset());
-        // Rappel du menu
-        menu();
-
 
     }
 
@@ -99,7 +94,7 @@ public class Menu {
         int nbJoueurs = EntreeUtilisateur.getInt();
         // Vérification qu'il y en a le bon nombre
         if (nbJoueurs < 2 || nbJoueurs > 4) {
-            System.out.println(ansi().fgRed().a("Il peut y avoir entre y et 4 joueurs"));
+            System.out.println(ansi().fgRed().a("Il peut y avoir entre 2 et 4 joueurs"));
             appelLimite(Menu::choixPseudoCouleurs);
         }
 

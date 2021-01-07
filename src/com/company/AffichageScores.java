@@ -1,13 +1,16 @@
 package com.company;
 
+import com.company.gameplay.Joueur;
 import org.fusesource.jansi.Ansi;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import static com.company.Main.appelLimite;
 import static org.fusesource.jansi.Ansi.ansi;
 
-public class Scores {
+public class AffichageScores {
 
     // Affiche l'entête du menu et le menu des scores
     public static void appelMenu() {
@@ -62,11 +65,11 @@ public class Scores {
         switch (saisieUtilisateur) {
             // Si l'option entrée est C alors on lui affiche la liste des scores par ordre croissant
             case "c" -> {
-                affichageScoreDecroissant(monTableau);
+                affichageScoreDecroissant(new ArrayList<Joueur>());
             }
             // Si l'option entrée est D alors on lui affiche la liste des scores par ordre décroissant
             case "d" -> {
-                affichageScoreCroissant(monTableau);
+                affichageScoreCroissant(new ArrayList<Joueur>());
             }
             // Si l'option entrée est M alors on lui affiche le menu principal du jeu
             case "m" -> {
@@ -79,10 +82,10 @@ public class Scores {
             }
         }
 
-        appelLimite(Scores::menuScore);
+        appelLimite(AffichageScores::menuScore);
     }
 
-    public static void affichageScoreDecroissant(String[][] monTableau) {
+    public static void affichageScoreDecroissant(List<Joueur> joueurs) {
 
         // Affichage des scores dans l'odre décroissant (meilleur au moins fort)
 
@@ -90,20 +93,20 @@ public class Scores {
 
         // Boucle qui affiche le tableau multidimensionnel dans l'ordre
         for (int i = 0; i < 10; i++) {
-            System.out.println(ansi().fg(Ansi.Color.BLUE).a(monTableau[i][0] + ", " + monTableau[i][1]).reset());
+            System.out.println(ansi().fg(Ansi.Color.BLUE).a(joueurs.get(i).nom + ", " + joueurs.get(i).score).reset());
         }
 
     }
 
-    public static void affichageScoreCroissant(String[][] monTableau) {
+    public static void affichageScoreCroissant(List<Joueur> joueurs) {
 
         // Affichage des scores dans l'ordre croissant (moins fort au meilleur)
 
         System.out.println(ansi().fgCyan().a("Tableau de scores : (Ordre Croissant)").reset());
 
         // Boucle qui affiche le tableau multidimensionnel à l'envers
-        for (int i = monTableau.length - 1; i >= 0; i--) {
-            System.out.println(ansi().fg(Ansi.Color.BLUE).a(monTableau[i][0] + ", " + monTableau[i][1]).reset());
+        for (int i = 9; i >= 0; i--) {
+            System.out.println(ansi().fg(Ansi.Color.BLUE).a(joueurs.get(i).nom + ", " + joueurs.get(i).score).reset());
         }
 
     }
