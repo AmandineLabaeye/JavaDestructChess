@@ -10,8 +10,12 @@ public class Main {
 
         //Affichage de l'en-tête du menu
         Menu.enteteMenu();
-        //Affichage du Menu
-        Menu.menu();
+
+        boolean rester = true;
+
+        while (rester) {
+            rester = Menu.menu();
+        }
 
     }
 
@@ -60,5 +64,21 @@ public class Main {
 
         // Appelle de la fonction passé
         return func.get();
+    }
+
+    /**
+     * Appel la fonction passé, a partir d'une certaine profondeur de la pile d'appel, quitte le program
+     * @param func Fonction à appeler
+     */
+    public static void appelLimite(Runnable func){
+        // Vérification de la taille de la pile d'appel
+        if (Thread.currentThread().getStackTrace().length > 1000) {
+            // Si la pile est trop profonde, on quitte le programme
+            System.out.println("X Trop de tentative, arrêt du programme");
+            System.exit(-1);
+        }
+
+        // Appelle de la fonction passé
+        func.run();
     }
 }

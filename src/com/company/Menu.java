@@ -22,7 +22,7 @@ public class Menu {
         ).reset());
     }
     // Création de la fonction " menu "
-    public static void menu() {
+    public static boolean menu() {
         // Affichage des option
         System.out.println(ansi()
                 .fgCyan().a("Veuillez saisir une option ci-dessous\n")
@@ -40,15 +40,15 @@ public class Menu {
         switch (saisieUtilisateur) {
 
             case "e": // Si l'utilisateur appuie sur e ou E, cela le fait sortir de l'application
-                System.out.println("Vous sortez de l'application");
-                break;
+                System.out.println(ansi().fgBrightRed().a("Vous sortez de l'application").reset());
+                return false;
 
             case "r": // Sinon si il appuie sur r ou R, cela affiche les règles
                 Regles();
                 break;
 
             case "l": // Sinon si il appuie sur l ou L, cela lance la partie
-                System.out.println("Début de la partie !");
+                System.out.println(ansi().fgBrightMagenta().a("Début de la partie !").reset());
                 nomUtilisateur();
                 break;
 
@@ -58,9 +58,10 @@ public class Menu {
 
             default: //Si l'utilisateur ne rentre pas d'option valide
                 System.out.println(ansi().fg(Ansi.Color.RED).a("Vous devez entrer une des options ci-dessus").reset());
-                menu();
+                break;
 
         }
+        return true;
     }
 
     public static void Regles() {
@@ -70,9 +71,6 @@ public class Menu {
                 "Vous débuterez la partie à côté de votre / vos ennemis, tour à tour vous devrez vous déplacer soit à la verticale, soit à l'horizontale, puis, après chaque déplacements, vous devrez détruire une case qui se trouve sur le plateau  \n" +
                 "Dès qu'un joueur se retrouve bloqué par des cases détruites ou des joueurs en haut, en bas, à droite et à gauche, il perd la partie. \n" +
                 "Vous êtes désormais prêts à jouer à [DestructChess] !").reset());
-        // Rappel du menu
-        menu();
-
 
     }
     // Création d'une nouvelle fonction qui permet de choisir le pseudo et la couleur des joueurs
