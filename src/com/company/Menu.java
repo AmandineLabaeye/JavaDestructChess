@@ -4,9 +4,9 @@ import com.company.gameplay.Jeu;
 import com.company.gameplay.Joueur;
 import org.fusesource.jansi.Ansi;
 
-import java.util.List;
 import java.util.Scanner;
 
+import static com.company.Main.appelLimite;
 import static com.company.Main.s;
 import static org.fusesource.jansi.Ansi.ansi;
 
@@ -125,7 +125,7 @@ public class Menu {
             default -> {
                 // Message d'erreur qui permet de prévenir l'utilisateur en cas de mauvaise saisie
                 System.out.println(ansi().fg(Ansi.Color.RED).a("Vous devez entrer une des options ci-dessus").reset());
-                return couleurVerif(pseudoUtilisateur);
+                return appelLimite(Menu::couleurVerif, pseudoUtilisateur);
             }
         }
 
@@ -137,7 +137,7 @@ public class Menu {
     public static String pseudoVerif(int i) {
         // Initialisation du scanner
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Veuillez entrer le pseudo du joueur " + i + 1);
+        System.out.println("Veuillez entrer le pseudo du joueur " + i);
         // Stockage de la valeur saisie par l'utilisateur
         String pseudoUtilisateur = scanner.nextLine();
         // Condition : Si le pseudo < 2 caractères ou que le pseudo > 10 alors message d'erreur
@@ -145,7 +145,7 @@ public class Menu {
             // Cas d'arrêt de la récursivité
             System.out.println(ansi().fg(Ansi.Color.RED).a("Vous devez saisir un pseudo entre 2 caractères minimum et 10 caractères maximum").reset());
             // Rappel de la fonction ( en cas d'erreur )
-            return pseudoVerif(i);
+            return appelLimite(Menu::pseudoVerif, i);
         }
         // Retourne la variable pseudo
         return pseudoUtilisateur;
