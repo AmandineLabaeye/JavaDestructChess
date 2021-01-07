@@ -6,6 +6,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 import static com.company.Main.s;
+import static com.company.Main.appelLimite;
 import static org.fusesource.jansi.Ansi.ansi;
 
 /**
@@ -212,7 +213,7 @@ public class Jeu {
         Case c = plateau.getCase(x, y);
 
         if (caseOccupee(c)) {
-            return demanderCase();
+            return appelLimite(this::demanderCase);
         }
         return c;
     }
@@ -236,13 +237,13 @@ public class Jeu {
 
         if (direction == null) {
             System.out.println(s("Entrée incorrecte"));
-            return demanderDeplacement(joueur);
+            return appelLimite(this::demanderDeplacement, joueur);
         }
 
         Case c = plateau.getAdjacente(direction, joueur.posX, joueur.posY);
 
         if (caseOccupee(c)) {
-            return demanderDeplacement(joueur);
+            return appelLimite(this::demanderDeplacement, joueur);
         }
 
         return c;
