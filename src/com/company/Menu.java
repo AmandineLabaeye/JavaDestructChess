@@ -7,30 +7,31 @@ import org.fusesource.jansi.Ansi;
 import java.util.List;
 import java.util.Scanner;
 
+import static com.company.Main.s;
 import static org.fusesource.jansi.Ansi.ansi;
 
 public class Menu {
 
     public static void enteteMenu() {
-        // Message de Bienvenue
-        System.out.println(ansi().fg(Ansi.Color.YELLOW).a("********************************************************"));
-        System.out.println("*                                                      *");
-        System.out.println("*            Bienvenue sur DestructChess  !            *");
-        System.out.println("*                                                      *");
-        System.out.println("********************************************************\n");
+        System.out.println(ansi().fgYellow().a(
+                "********************************************************\n" +
+                "*                                                      *\n" +
+                "*            Bienvenue sur DestructChess  !            *\n" +
+                "*                                                      *\n" +
+                "********************************************************\n"
+        ).reset());
     }
     // Création de la fonction " menu "
     public static void menu() {
+        // Affichage des option
+        System.out.println(ansi()
+                .fgCyan().a("Veuillez saisir une option ci-dessous\n")
+                .fgMagenta().a(s("* - R : Voir les règles\n"))
+                .fgGreen().a("* - L : Lancer une partie\n")
+                .fgYellow().a("* - S : Afficher le score\n")
+                .fgBlue().a("* - E : Sortir de l'application")
+        .reset());
 
-        System.out.println(ansi().fg(Ansi.Color.CYAN).a("Veuillez saisir une option ci-dessous\n"));
-        // Voir les règles
-        System.out.println(ansi().fg(Ansi.Color.MAGENTA).a("* - R : Voir les règles"));
-        // Lancer une partie
-        System.out.println(ansi().fg(Ansi.Color.GREEN).a("* - L : Lancer une partie"));
-        // Afficher le score
-        System.out.println(ansi().fg(Ansi.Color.YELLOW).a("* - S : Afficher le score"));
-        // Sortir de l'application
-        System.out.println(ansi().fg(Ansi.Color.BLUE).a("* - E : Sortir de l'application").reset());
         // Initialisation du scanner
         Scanner scanner = new Scanner(System.in);
         // Récupération de la saisie de l'utilisateur
@@ -96,19 +97,21 @@ public class Menu {
         // Initialisation du scanner
         Scanner scanner = new Scanner(System.in);
         // Affichage du menu de couleur
-        System.out.println("Merci " + pseudoUtilisateur + ", choisissez la couleur de votre pion");
-        System.out.println(ansi().fg(Ansi.Color.BLUE).a("* - B : Bleu"));
-        System.out.println(ansi().fg(Ansi.Color.GREEN).a("* - V : Vert"));
-        System.out.println(ansi().fg(Ansi.Color.YELLOW).a("* - J : Jaune"));
-        System.out.println(ansi().fg(Ansi.Color.RED).a("* - R : Rouge"));
-        System.out.println(ansi().fg(Ansi.Color.CYAN).a("* - C : Cyan"));
-        System.out.println(ansi().fg(Ansi.Color.BLACK).a("* - N : Noir"));
-        System.out.println(ansi().fg(Ansi.Color.WHITE).a("* - W : Blanc"));
-        System.out.println(ansi().fg(Ansi.Color.MAGENTA).a("* - M : Magenta").reset());
+        System.out.println(ansi()
+                .a("Merci " + pseudoUtilisateur + ", choisissez la couleur de votre pion\n")
+                .fgBlue().a("* - B : Bleu\n")
+                .fgGreen().a("* - V : Vert\n")
+                .fgYellow().a("* - J : Jaune\n")
+                .fgRed().a("* - R : Rouge\n")
+                .fgCyan().a("* - C : Cyan\n")
+                .fgBlack().a("* - N : Noir\n")
+                .fg(Ansi.Color.WHITE).a("* - W : Blanc\n")
+                .fgMagenta().a("* - M : Magenta")
+        .reset());
         // Récupération des saisies de l'utilisateur dans le scanner et transformation en majuscule
         String couleurUtilisateur = scanner.nextLine().toUpperCase();
         // Initialisation de la variable " couleur "
-        Ansi.Color couleur = Ansi.Color.WHITE;
+        Ansi.Color couleur;
         // Switch qui permet de vérifier la saisie de l'utilisateur
         switch (couleurUtilisateur) {
             case "B", "BLEU" -> couleur = Ansi.Color.BLUE; // Si l'utilisateur tape B ou BLEU alors on définie la couleur Bleu
