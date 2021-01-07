@@ -3,6 +3,7 @@ package com.company;
 import com.company.gameplay.Jeu;
 import com.company.gameplay.Joueur;
 import org.fusesource.jansi.Ansi;
+import org.w3c.dom.ls.LSOutput;
 
 import java.util.Scanner;
 
@@ -15,22 +16,25 @@ public class Menu {
     public static void enteteMenu() {
         System.out.println(ansi().fgYellow().a(
                 "********************************************************\n" +
-                "*                                                      *\n" +
-                "*            Bienvenue sur DestructChess  !            *\n" +
-                "*                                                      *\n" +
-                "********************************************************\n"
+                        "*                                                      *\n" +
+                        "*            Bienvenue sur DestructChess  !            *\n" +
+                        "*                                                      *\n" +
+                        "********************************************************\n"
         ).reset());
     }
+
     // Création de la fonction " menu "
     public static void menu() {
         // Affichage des option
         System.out.println(ansi()
-                .fgCyan().a("Veuillez saisir une option ci-dessous\n")
-                .fgMagenta().a(s("* - R : Voir les règles\n"))
-                .fgGreen().a("* - L : Lancer une partie\n")
-                .fgYellow().a("* - S : Afficher le score\n")
-                .fgBlue().a("* - E : Sortir de l'application")
-        .reset());
+                .fgBlue().a(" =======================================================\n")
+                .fgCyan().a("| Veuillez saisir une option ci-dessous                 |\n")
+                .fgRed().a(s("| * - R : Voir les règles                               |\n"))
+                .fgGreen().a("| * - L : Lancer une partie                             |\n")
+                .fgYellow().a("| * - S : Afficher le score                             |\n")
+                .fgBlue().a("| * - E : Sortir de l'application                       |\n")
+                .fgBlue().a(" =======================================================")
+                .reset());
 
         // Initialisation du scanner
         Scanner scanner = new Scanner(System.in);
@@ -65,16 +69,26 @@ public class Menu {
 
     public static void Regles() {
         // Affichage des règles dans la console
-        System.out.println(ansi().fg(Ansi.Color.YELLOW).a("Bonjour et bienvenue dans [DestructChess] ! \n" +
-                "Le but est simple ! Bloquez votre / vos adversaire(s) afin de décrocher la victoire !  \n" +
-                "Vous débuterez la partie à côté de votre / vos ennemis, tour à tour vous devrez vous déplacer soit à la verticale, soit à l'horizontale, puis, après chaque déplacements, vous devrez détruire une case qui se trouve sur le plateau  \n" +
+        String enteteRegle = "==================================================";
+        String texteRegle = s("| Bienvenue dans les règles de [DestructChess] ! |");
+
+        TexteAlignement texteAlignement = new TexteAlignement(170, TexteAlignement.alignement.CENTRE);
+
+        System.out.println(ansi().fg(Ansi.Color.BLUE).a(texteAlignement.format(enteteRegle)).reset());
+        System.out.println(ansi().fg(Ansi.Color.GREEN).a(texteAlignement.format(texteRegle)).reset());
+        System.out.println(ansi().fg(Ansi.Color.BLUE).a(texteAlignement.format(enteteRegle)).reset());
+
+        System.out.println(ansi().fg(Ansi.Color.YELLOW).a("Le but est simple ! Bloquez votre / vos adversaire(s) afin de décrocher la victoire ! \n" +
+                "Vous débuterez la partie à côté de votre / vos ennemis, tour à tour vous devrez vous déplacer soit à la verticale, soit à l'horizontale, puis,\n" +
+                "après chaque déplacements, vous devrez détruire une case qui se trouve sur le plateau  \n" +
                 "Dès qu'un joueur se retrouve bloqué par des cases détruites ou des joueurs en haut, en bas, à droite et à gauche, il perd la partie. \n" +
-                "Vous êtes désormais prêts à jouer à [DestructChess] !").reset());
+                "Vous êtes désormais prêts à jouer à [DestructChess] ! \n").reset());
         // Rappel du menu
         menu();
 
 
     }
+
     // Création d'une nouvelle fonction qui permet de choisir le pseudo et la couleur des joueurs
     public static void nomUtilisateur() {
         // Initialisation du tableau des joueurs
@@ -92,6 +106,7 @@ public class Menu {
         new Jeu(joueurs).jouer();
 
     }
+
     // Création d'une fonction de vérification pour la couleur
     public static Ansi.Color couleurVerif(String pseudoUtilisateur) {
         // Initialisation du scanner
@@ -107,7 +122,7 @@ public class Menu {
                 .fgBlack().a("* - N : Noir\n")
                 .fg(Ansi.Color.WHITE).a("* - W : Blanc\n")
                 .fgMagenta().a("* - M : Magenta")
-        .reset());
+                .reset());
         // Récupération des saisies de l'utilisateur dans le scanner et transformation en majuscule
         String couleurUtilisateur = scanner.nextLine().toUpperCase();
         // Initialisation de la variable " couleur "
@@ -119,9 +134,9 @@ public class Menu {
             case "J", "JAUNE" -> couleur = Ansi.Color.YELLOW; // // alors on définie la couleur Jaune
             case "R", "ROUGE" -> couleur = Ansi.Color.RED; // // alors on définie la couleur Rouge
             case "C", "CYAN" -> couleur = Ansi.Color.CYAN; // // alors on définie la couleur Cyan
-            case "N", "NOIR" -> couleur = Ansi.Color.BLACK; // // alors on définie la couleur noire
-            case "W", "BLANC" -> couleur = Ansi.Color.WHITE; // // alors on définie la couleur blanche
-            case "M", "MAGENTA" -> couleur = Ansi.Color.MAGENTA; // // alors on définie la couleur magenta
+            case "N", "NOIR" -> couleur = Ansi.Color.BLACK; // // alors on définie la couleur Noire
+            case "W", "BLANC" -> couleur = Ansi.Color.WHITE; // // alors on définie la couleur Blanche
+            case "M", "MAGENTA" -> couleur = Ansi.Color.MAGENTA; // // alors on définie la couleur Magenta
             default -> {
                 // Message d'erreur qui permet de prévenir l'utilisateur en cas de mauvaise saisie
                 System.out.println(ansi().fg(Ansi.Color.RED).a("Vous devez entrer une des options ci-dessus").reset());
@@ -133,6 +148,7 @@ public class Menu {
         return couleur;
 
     }
+
     // Création d'une fonction pour vérifier la taille du pseudo
     public static String pseudoVerif(int i) {
         // Initialisation du scanner
