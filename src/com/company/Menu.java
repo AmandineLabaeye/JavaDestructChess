@@ -69,8 +69,10 @@ public class Menu {
         return true;
     }
 
+    /**
+     * Affichage des règles dans la console
+     */
     public static void regles() {
-        // Affichage des règles dans la console
 
         System.out.println(ansi()
                 .fgBlue().a("==================================================")
