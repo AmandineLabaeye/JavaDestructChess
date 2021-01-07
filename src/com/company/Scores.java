@@ -2,7 +2,6 @@ package com.company;
 
 import org.fusesource.jansi.Ansi;
 
-import java.util.Arrays;
 import java.util.Scanner;
 
 import static com.company.Main.appelLimite;
@@ -49,8 +48,8 @@ public class Scores {
         // Sous menu du score
         System.out.println(ansi()
                 .fgCyan().a("Veuillez saisir une option ci-dessous \n")
-                .fgMagenta().a("* - D : Voir le score (Du meilleur au moins fort\n")
-                .fgGreen().a("* - C : Voir le score croissant (Du moins fort au meilleur)\n")
+                .fgMagenta().a("* - C : Voir le score croissant (Du meilleur au moins fort)\n")
+                .fgGreen().a("* - D : Voir le score (Du moins fort au meilleur)\n")
                 .fgBlue().a("* - M : Retour au menu principal\n")
         .reset());
 

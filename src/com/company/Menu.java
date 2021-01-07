@@ -50,7 +50,7 @@ public class Menu {
 
             case "l": // Sinon si il appuie sur l ou L, cela lance la partie
                 System.out.println(ansi().fgBrightMagenta().a("Début de la partie !").reset());
-                nomUtilisateur();
+                choixPseudoCouleurs();
                 break;
 
             case "s": // Sinon si il appuie sur s ou S, cela affiche le tableau des scores
@@ -76,7 +76,7 @@ public class Menu {
     }
 
     // Création d'une nouvelle fonction qui permet de choisir le pseudo et la couleur des joueurs
-    public static void nomUtilisateur() {
+    public static void choixPseudoCouleurs() {
         // Initialisation du tableau des joueurs
         Joueur[] joueurs = new Joueur[2];
         // Boucle qui permet de créer deux utilisateurs ( pseudo + couleur )

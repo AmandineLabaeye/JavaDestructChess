@@ -1,9 +1,11 @@
 package com.company.gameplay;
 
 import com.company.EntreeUtilisateur;
+import org.fusesource.jansi.Ansi;
 
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.company.Main.s;
 import static com.company.Main.appelLimite;
@@ -19,6 +21,7 @@ public class Jeu {
 
     public Jeu(Collection<Joueur> joueurs) {
         // Initialisation de la liste de joueurs.
+
         joueurVivants = new LinkedList<>(joueurs);
     }
 
@@ -48,30 +51,10 @@ public class Jeu {
         while (joueurVivants.size() > 1) {
             Joueur joueur = iterator.next();
 
-
             // Début du tour, on dessine le plateau
             dessiner(false);
 
             System.out.println(ansi().fg(joueur.couleur).a("C'est au tour de " + joueur.nom).reset());
-
-            // Si le joueur ne peux plus se déplacer, on le retire de la liste et met fin au tour
-            if (!peuxJoue(joueur)) {
-                iterator.remove();
-                // Si la partie est fini, on affiche pas le message de défaite
-                if (joueurVivants.size() == 1) {
-                    continue;
-                }
-
-                // Affichage du message de défaite
-                System.out.println(ansi().bgBrightRed().fgBlack().a(s("Vous êtes encerclé! Vous ne pouvez plus vous déplacer jusqu'a la fin de la partie.")).reset());
-                // On attend une seconde que le joueur puisse lire le message
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException ignored) { }
-
-                // Fin du tour
-                continue;
-            }
 
             /* ** déplacement ** */
 
@@ -97,6 +80,9 @@ public class Jeu {
             // On détruit la case entré par le joueur
             demanderCase().detruire();
 
+            // On élimine les joueurs qui doive l'être
+            verifierEliminations();
+
             // Reprend la liste au début si on étais arrivé a la fin
             if (!iterator.hasNext()) {
                 iterator = joueurVivants.listIterator();
@@ -119,14 +105,44 @@ public class Jeu {
     /**
      * Test si le joueur peux effectué un déplacement
      */
-    private boolean peuxJoue(Joueur joueur) {
+    private boolean encercle(Joueur joueur) {
         for (Direction direction : Direction.values()) {
             Case c = plateau.getAdjacente(direction, joueur.posX, joueur.posY);
             if (c != null && c.estLibre()) {
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
+    }
+
+    private void verifierEliminations() {
+        // Récupération des joueurs qui ne peuvent plus se déplacer
+        List<Joueur> elimines = joueurVivants.stream().filter(this::encercle).collect(Collectors.toList());
+
+        // Si aucun joueur n'est éliminé
+        if (elimines.size() == 0)
+            return;
+
+        // Retire tous les joueurs élimés de la liste
+        joueurVivants.removeAll(elimines);
+
+        // Affichage du message de défaite
+        if (elimines.size() > 1) {
+            System.out.println(
+                    ansi().bgBrightYellow().fgBlack().a("COMBO!\n").reset()
+                    .bgBrightYellow().a(elimines.size() + s( " joueurs sont encerclés! Ils sont éliminés.")).reset()
+            );
+        } else {
+            Joueur elimine = elimines.get(0);
+            System.out.println(ansi().fg(elimine.couleur).a(elimine.nom).fgBrightRed().a(s( " est encerclés! Il est éliminés.")).reset());
+        }
+
+        // On attend une seconde que le joueur puisse lire le message sauf si la partie est terminé
+        if ((joueurVivants.size() > 0)) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ignored) { }
+        }
     }
 
     /**
