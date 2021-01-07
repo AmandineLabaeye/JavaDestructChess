@@ -1,6 +1,7 @@
 package com.company.gameplay;
 
 import com.company.EntreeUtilisateur;
+import com.company.Profil;
 import com.company.Scores;
 
 import java.util.*;
@@ -19,15 +20,10 @@ public class Jeu {
     private final List<Joueur> joueurs; // Tous les joueurs de la partie
     private final List<Joueur> joueurVivants; // Les joueurs encore vivants
 
-    public Jeu(Collection<Joueur> joueurs) {
+    public Jeu(Profil[] profils) {
         // Initialisation de la liste de joueurs.
-        this.joueurs = new ArrayList<>(joueurs);
+        this.joueurs = Arrays.stream(profils).map(Joueur::new).collect(Collectors.toList());
         joueurVivants = new LinkedList<>(joueurs);
-    }
-
-    public Jeu(Joueur[] joueurs) {
-        // Si un array est passé au constructeur, on le converti en liste
-        this(Arrays.asList(joueurs));
     }
 
     /**
@@ -52,6 +48,11 @@ public class Jeu {
         // Boucle sur tous les joueurs tant qu'il en rete plus d'un en vie
         while (joueurVivants.size() > 1) {
             Joueur joueur = iterator.next();
+
+            // Si le joueur est éliminé, il ne peux pas joué
+            if (joueur.estElimine()) {
+                continue;
+            }
 
             // Début du tour, on dessine le plateau
             dessiner(false);
@@ -91,8 +92,11 @@ public class Jeu {
             // On élimine les joueurs qui doive l'être
             verifierEliminations();
 
-            // Reprend la liste au début si on étais arrivé a la fin
+            // Si on est arrivé au bout de la liste
             if (!iterator.hasNext()) {
+                // Supprime tous les joueurs éliminés
+                joueurVivants.removeAll(joueurVivants.stream().filter(Joueur::estElimine).collect(Collectors.toList()));
+                // Retourne au début de la liste
                 iterator = joueurVivants.listIterator();
             }
         }
@@ -120,19 +124,25 @@ public class Jeu {
         // Ajout et retraits des points
         for (Joueur joueur : joueurs) {
             if (joueur == gagnant) {
-                joueur.score += 5;
+                joueur.profil.score += 5;
             }
             else {
-                joueur.score -= 3;
+                joueur.profil.score -= 3;
             }
         }
 
         Scores.actualiserScores();
     }
+
+
     /**
-     * Test si le joueur peux effectué un déplacement
+     * Test si le est encerclé
+     * Retournera false si le joueur est éliminé
      */
     private boolean encercle(Joueur joueur) {
+        if (joueur.estElimine()) {
+            return false;
+        }
         for (Direction direction : Direction.values()) {
             Case c = plateau.getAdjacente(direction, joueur.posX, joueur.posY);
             if (c != null && c.estLibre()) {
@@ -153,7 +163,9 @@ public class Jeu {
         dessiner(false);
 
         // Retire tous les joueurs élimés de la liste
-        joueurVivants.removeAll(elimines);
+        for (Joueur elimine : elimines) {
+            elimine.eliminer();
+        }
 
         // Affichage du message de défaite
         if (elimines.size() > 1) {
@@ -166,12 +178,10 @@ public class Jeu {
             System.out.println(ansi().fg(elimine.couleur).a(elimine.nom).fgBrightRed().a(s( " est encerclé! Il est éliminé.")).reset());
         }
 
-        // On attend une 2.5s que le joueur puisse lire le message sauf si la partie est terminé, sauf si la partie est terminé
-        if ((joueurVivants.size() > 1)) {
-            try {
-                Thread.sleep(2500);
-            } catch (InterruptedException ignored) { }
-        }
+        // On attend une 2.5s que le joueur puisse lire le message
+        try {
+            Thread.sleep(2500);
+        } catch (InterruptedException ignored) { }
     }
 
     /**

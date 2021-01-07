@@ -1,26 +1,43 @@
 package com.company.gameplay;
 
+import com.company.Profil;
 import org.fusesource.jansi.Ansi;
 
-import java.io.Serializable;
-
 /**
- * Joueur représenté par un nom et une couleur immuable, contient son score.
- * Contient également des cordonnées.
+ * Représente un joueur lors d'une partie
  */
-public class Joueur implements Serializable {
+class Joueur {
 
+    public final Profil profil;
+
+    /**
+     * Identique à profil.nom
+     */
     public final String nom;
+    /**
+     * Identique à profil.couleur
+     */
     public final Ansi.Color couleur;
 
-    public int score;
+    public int posX;
+    public int posY;
 
-    //transient: ignoré lors de la sérialisation
-    public transient int posX;
-    public transient int posY;
+    private boolean elimine;
 
-    public Joueur(String nom, Ansi.Color couleur) {
-        this.nom = nom;
-        this.couleur = couleur;
+    public boolean estElimine() {
+        return elimine;
+    }
+
+    /**
+     * Déclare le joueur éliminer
+     */
+    public void eliminer() {
+        elimine = true;
+    }
+
+    public Joueur(Profil profil) {
+        this.profil = profil;
+        nom = profil.nom;
+        couleur = profil.couleur;
     }
 }

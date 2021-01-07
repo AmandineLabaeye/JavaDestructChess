@@ -1,7 +1,6 @@
 package com.company;
 
 import com.company.gameplay.Jeu;
-import com.company.gameplay.Joueur;
 import org.fusesource.jansi.Ansi;
 
 import java.util.Arrays;
@@ -91,7 +90,7 @@ public class Menu {
     public static void choixPseudoCouleurs() {
         System.out.println("Combien de joueurs? (entre 2 et 4)");
 
-        // Demande du nombre de joueurs
+        // Demande du nombre de profils
         int nbJoueurs = EntreeUtilisateur.getInt();
         // Vérification qu'il y en a le bon nombre
         if (nbJoueurs < 2 || nbJoueurs > 4) {
@@ -99,31 +98,31 @@ public class Menu {
             appelLimite(Menu::choixPseudoCouleurs);
         }
 
-        // Initialisation du tableau des joueurs
-        Joueur[] joueurs = new Joueur[nbJoueurs];
+        // Initialisation du tableau des profils
+        Profil[] profils = new Profil[nbJoueurs];
         // Boucle qui permet de créer deux utilisateurs ( pseudo + couleur )
         for (int i = 0; i < nbJoueurs; i++) {
             // Création d'une variable pour vérifier la taille du pseudo de l'utilisateur
-            String pseudoUtilisateur = pseudoVerif(i + 1, joueurs);
+            String pseudoUtilisateur = pseudoVerif(i + 1, profils);
 
-            // On stock le résultat de la fonction, on regarde si le joueur existe déjà dans le tableau des scores
-            Joueur joueur  = Scores.chercheJoueur(pseudoUtilisateur);
+            // On stock le résultat de la fonction, on regarde si le profil existe déjà dans le tableau des scores
+            Profil profil = Scores.chercheJoueur(pseudoUtilisateur);
 
-            // Si le joueur n'existe pas donc est null
-            if (joueur == null) {
+            // Si le profil n'existe pas donc est null
+            if (profil == null) {
                 // Création d'une variable pour vérifier la couleur de l'utilisateur
                 Ansi.Color couleur = couleurVerif(pseudoUtilisateur);
-                // Ajout du nom et de la couleur dans le tableau (Crée un nouveau joueur)
-                Joueur nouveau = new Joueur(pseudoUtilisateur, couleur);
-                joueurs[i] = nouveau;
+                // Ajout du nom et de la couleur dans le tableau (Crée un nouveau profil)
+                Profil nouveau = new Profil(pseudoUtilisateur, couleur);
+                profils[i] = nouveau;
                 Scores.ajouterJoueur(nouveau);
             } else { // Si il existe
-                // On stock juste le joueur dans le tableau
-                joueurs[i] = joueur;
+                // On stock juste le profil dans le tableau
+                profils[i] = profil;
             }
         }
         // Affichage du plateau
-        new Jeu(joueurs).jouer();
+        new Jeu(profils).jouer();
 
     }
 
@@ -170,7 +169,7 @@ public class Menu {
     }
 
     // Création d'une fonction pour vérifier la taille du pseudo
-    public static String pseudoVerif(int i, Joueur[] joueurs) {
+    public static String pseudoVerif(int i, Profil[] profils) {
         // Initialisation du scanner
         Scanner scanner = new Scanner(System.in);
         System.out.println("Veuillez entrer le pseudo du joueur " + i);
@@ -181,14 +180,14 @@ public class Menu {
 
             System.out.println(ansi().fg(Ansi.Color.RED).a(s("Vous devez saisir un pseudo entre 2 caractères minimum et 10 caractères maximum")).reset());
             // Rappel de la fonction ( en cas d'erreur )
-            return appelLimite(Menu::pseudoVerif, i, joueurs);
+            return appelLimite(Menu::pseudoVerif, i, profils);
 
-            // Vérification que les pseudos sont différents et que pour le premier joueur il peut choisir ce qu'il veut par rapport au tableau joueurs
-        } else if (Arrays.stream(joueurs).anyMatch(joueur -> joueur != null && joueur.nom.equals(pseudoUtilisateur))) {
+            // Vérification que les pseudos sont différents et que pour le premier joueur il peut choisir ce qu'il veut par rapport au tableau profils
+        } else if (Arrays.stream(profils).anyMatch(joueur -> joueur != null && joueur.nom.equals(pseudoUtilisateur))) {
 
             System.out.println(ansi().fg(Ansi.Color.RED).a(s("Ce joueur existe déjà, veuillez modifier votre pseudo")).reset());
             // Rappel de la fonction ( en cas d'erreur )
-            return appelLimite(Menu::pseudoVerif, i, joueurs);
+            return appelLimite(Menu::pseudoVerif, i, profils);
 
         }
 

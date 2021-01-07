@@ -1,6 +1,5 @@
 package com.company;
 
-import com.company.gameplay.Joueur;
 import org.fusesource.jansi.Ansi;
 
 import java.util.List;
@@ -35,7 +34,7 @@ public class AffichageScores {
     // Création de la fonction " menuScore "
     public static void menuScore() {
 
-        // Vérifie la taille de la liste Joueur si elle est égal à 0 alors on le renvoie au menu principal, car la liste est vide
+        // Vérifie la taille de la liste Profil si elle est égal à 0 alors on le renvoie au menu principal, car la liste est vide
         if (Scores.getJoueurs().size() == 0) {
             System.out.println(ansi().fgRed().a(s(
                     "Aucun joueur n'a été enregistré\n" +
@@ -88,30 +87,30 @@ public class AffichageScores {
 
     public static void affichageScoreDecroissant() {
 
-        List<Joueur> joueurs = Scores.getJoueurs();
+        List<Profil> profils = Scores.getJoueurs();
 
         // Affichage des scores dans l'odre décroissant (meilleur au moins fort)
 
         System.out.println(ansi().fgCyan().a("Tableau de scores : (Ordre Décroissant)").reset());
 
         // Boucle qui affiche la liste à l'envers
-        for (int i = joueurs.size() - 1; i >= Math.max(0, joueurs.size() - 10); i--) {
-            System.out.println(ansi().fg(joueurs.get(i).couleur).a(joueurs.get(i).nom + ", " + joueurs.get(i).score).reset());
+        for (int i = profils.size() - 1; i >= Math.max(0, profils.size() - 10); i--) {
+            System.out.println(ansi().fg(profils.get(i).couleur).a(profils.get(i).nom + ", " + profils.get(i).score).reset());
         }
 
     }
 
     public static void affichageScoreCroissant() {
 
-        List<Joueur> joueurs = Scores.getJoueurs();
+        List<Profil> profils = Scores.getJoueurs();
 
         // Affichage des scores dans l'ordre croissant (moins fort au meilleur)
 
         System.out.println(ansi().fgCyan().a("Tableau de scores : (Ordre Croissant)").reset());
 
         // Boucle qui affiche la liste dans l'ordre
-        for (int i = 0; i < Math.min(joueurs.size(), 10); i++) {
-            System.out.println(ansi().fg(joueurs.get(i).couleur).a(joueurs.get(i).nom + ", " + joueurs.get(i).score).reset());
+        for (int i = 0; i < Math.min(profils.size(), 10); i++) {
+            System.out.println(ansi().fg(profils.get(i).couleur).a(profils.get(i).nom + ", " + profils.get(i).score).reset());
         }
 
     }

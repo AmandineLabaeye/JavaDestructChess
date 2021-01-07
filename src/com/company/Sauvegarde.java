@@ -1,7 +1,5 @@
 package com.company;
 
-import com.company.gameplay.Joueur;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,23 +13,23 @@ public class Sauvegarde {
 
     /**
      * Sauvegarder le tableau des scores
-     * @param joueurs Le tableau à sauvegarder
+     * @param profils Le tableau à sauvegarder
      */
-    public static void sauvegarder(List<Joueur> joueurs) throws IOException {
+    public static void sauvegarder(List<Profil> profils) throws IOException {
         ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(fichierSauvegarder));
-        outputStream.writeObject(joueurs);
+        outputStream.writeObject(profils);
     }
 
     /**
      * Charger le tableau des scores
      * @return Le tableau présent dans le fichier de sauvegarde
      */
-    public static List<Joueur> charger() throws IOException, ClassNotFoundException {
+    public static List<Profil> charger() throws IOException, ClassNotFoundException {
         if (!new File(fichierSauvegarder).exists())
             return new ArrayList<>();
 
         ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(fichierSauvegarder));
-        return (List<Joueur>) inputStream.readObject();
+        return (List<Profil>) inputStream.readObject();
     }
 
 }
