@@ -5,6 +5,7 @@ import com.company.gameplay.Joueur;
 import org.fusesource.jansi.Ansi;
 import org.w3c.dom.ls.LSOutput;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 import static com.company.Main.appelLimite;
@@ -24,7 +25,7 @@ public class Menu {
     }
 
     // Création de la fonction " menu "
-    public static void menu() {
+    public static boolean menu() {
         // Affichage des option
         System.out.println(ansi()
                 .fgBlue().a(" =======================================================\n")
@@ -44,30 +45,31 @@ public class Menu {
         switch (saisieUtilisateur) {
 
             case "e": // Si l'utilisateur appuie sur e ou E, cela le fait sortir de l'application
-                System.out.println("Vous sortez de l'application");
-                break;
+                System.out.println(ansi().fgBrightRed().a("Vous sortez de l'application").reset());
+                return false;
 
             case "r": // Sinon si il appuie sur r ou R, cela affiche les règles
-                Regles();
+                regles();
                 break;
 
             case "l": // Sinon si il appuie sur l ou L, cela lance la partie
-                System.out.println("Début de la partie !");
-                nomUtilisateur();
+                System.out.println(ansi().fgBrightMagenta().a(s("Début de la partie !")).reset());
+                choixPseudoCouleurs();
                 break;
 
             case "s": // Sinon si il appuie sur s ou S, cela affiche le tableau des scores
-                Scores.AppelMenu(); // Rappel de la class pour afficher le menu des scores
+                Scores.appelMenu(); // Rappel de la class pour afficher le menu des scores
                 break;
 
             default: //Si l'utilisateur ne rentre pas d'option valide
                 System.out.println(ansi().fg(Ansi.Color.RED).a("Vous devez entrer une des options ci-dessus").reset());
-                menu();
+                break;
 
         }
+        return true;
     }
 
-    public static void Regles() {
+    public static void regles() {
         // Affichage des règles dans la console
         String enteteRegle = "==================================================";
         String texteRegle = s("| Bienvenue dans les règles de [DestructChess] ! |");
@@ -90,13 +92,23 @@ public class Menu {
     }
 
     // Création d'une nouvelle fonction qui permet de choisir le pseudo et la couleur des joueurs
-    public static void nomUtilisateur() {
+    public static void choixPseudoCouleurs() {
+        System.out.println("Combien de joueurs? (entre 2 et 4)");
+
+        // Demande du nombre de joueurs
+        int nbJoueurs = EntreeUtilisateur.getInt();
+        // Vérification qu'il y en a le bon nombre
+        if (nbJoueurs < 2 || nbJoueurs > 4) {
+            System.out.println(ansi().fgRed().a("Il peut y avoir entre y et 4 joueurs"));
+            appelLimite(Menu::choixPseudoCouleurs);
+        }
+
         // Initialisation du tableau des joueurs
-        Joueur[] joueurs = new Joueur[2];
+        Joueur[] joueurs = new Joueur[nbJoueurs];
         // Boucle qui permet de créer deux utilisateurs ( pseudo + couleur )
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < nbJoueurs; i++) {
             // Création d'une variable pour vérifier la taille du pseudo de l'utilisateur
-            String pseudoUtilisateur = pseudoVerif(i + 1);
+            String pseudoUtilisateur = pseudoVerif(i + 1, joueurs);
             // Création d'une variable pour vérifier la couleur de l'utilisateur
             Ansi.Color couleur = couleurVerif(pseudoUtilisateur);
             // Ajout du nom et de la couleur dans le tableau
@@ -150,7 +162,7 @@ public class Menu {
     }
 
     // Création d'une fonction pour vérifier la taille du pseudo
-    public static String pseudoVerif(int i) {
+    public static String pseudoVerif(int i, Joueur[] joueurs) {
         // Initialisation du scanner
         Scanner scanner = new Scanner(System.in);
         System.out.println("Veuillez entrer le pseudo du joueur " + i);
@@ -158,14 +170,23 @@ public class Menu {
         String pseudoUtilisateur = scanner.nextLine();
         // Condition : Si le pseudo < 2 caractères ou que le pseudo > 10 alors message d'erreur
         if (pseudoUtilisateur.length() < 2 || pseudoUtilisateur.length() > 10) {
-            // Cas d'arrêt de la récursivité
+
             System.out.println(ansi().fg(Ansi.Color.RED).a("Vous devez saisir un pseudo entre 2 caractères minimum et 10 caractères maximum").reset());
             // Rappel de la fonction ( en cas d'erreur )
-            return appelLimite(Menu::pseudoVerif, i);
+            return appelLimite(Menu::pseudoVerif, i, joueurs);
+
+            // Vérification que les pseudos sont différents et que pour le premier joueur il peut choisir ce qu'il veut par rapport au tableau joeurs
+        } else if (Arrays.stream(joueurs).anyMatch(joueur -> joueur != null && joueur.nom.equals(pseudoUtilisateur))) {
+
+            System.out.println(ansi().fg(Ansi.Color.RED).a("Ce joueur existe déjà, veuillez modifier votre pseudo").reset());
+            // Rappel de la fonction ( en cas d'erreur )
+            return appelLimite(Menu::pseudoVerif, i, joueurs);
+
         }
+
+        // Cas d'arrêt de la récursivité
         // Retourne la variable pseudo
         return pseudoUtilisateur;
     }
 }
-
 
