@@ -104,10 +104,20 @@ public class Menu {
         for (int i = 0; i < nbJoueurs; i++) {
             // Création d'une variable pour vérifier la taille du pseudo de l'utilisateur
             String pseudoUtilisateur = pseudoVerif(i + 1, joueurs);
-            // Création d'une variable pour vérifier la couleur de l'utilisateur
-            Ansi.Color couleur = couleurVerif(pseudoUtilisateur);
-            // Ajout du nom et de la couleur dans le tableau
-            joueurs[i] = new Joueur(pseudoUtilisateur, couleur);
+
+            // On stock le résultat de la fonction, on regarde si le joueur existe déjà dans le tableau des scores
+            Joueur joueur  = Scores.chercheJoueur(pseudoUtilisateur);
+
+            // Si le joueur n'existe pas donc est null
+            if (joueur == null) {
+                // Création d'une variable pour vérifier la couleur de l'utilisateur
+                Ansi.Color couleur = couleurVerif(pseudoUtilisateur);
+                // Ajout du nom et de la couleur dans le tableau (Crée un nouveau joueur)
+                joueurs[i] = new Joueur(pseudoUtilisateur, couleur);
+            } else { // Si il existe
+                // On stock juste le joueur dans le tableau
+                joueurs[i] = joueur;
+            }
         }
         // Affichage du plateau
         new Jeu(joueurs).jouer();

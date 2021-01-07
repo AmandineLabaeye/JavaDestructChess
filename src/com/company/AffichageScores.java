@@ -34,25 +34,11 @@ public class AffichageScores {
     // Création de la fonction " menuScore "
     public static void menuScore() {
 
-        // Tableau temporaire de la liste des joueurs et des scores correspondant au nom
-        String[][] monTableau = {
-                {"Thiphaine", "50"},
-                {"Isabelle", "46"},
-                {"Amandine", "45"},
-                {"Anthony", "38"},
-                {"Alan", "34"},
-                {"Sandrine", "32"},
-                {"Toinon", "23"},
-                {"Christophe", "21"},
-                {"Killian", "20"},
-                {"Patrick", "12"},
-        };
-
         // Sous menu du score
         System.out.println(ansi()
                 .fgCyan().a("Veuillez saisir une option ci-dessous \n")
-                .fgMagenta().a("* - C : Voir le score croissant (Du meilleur au moins fort)\n")
-                .fgGreen().a("* - D : Voir le score (Du moins fort au meilleur)\n")
+                .fgMagenta().a("* - C : Voir le score croissant (Du moins fort au meilleur)\n")
+                .fgGreen().a("* - D : Voir le score (Du meilleur au moins fort)\n")
                 .fgBlue().a("* - M : Retour au menu principal\n")
         .reset());
 
@@ -65,11 +51,11 @@ public class AffichageScores {
         switch (saisieUtilisateur) {
             // Si l'option entrée est C alors on lui affiche la liste des scores par ordre croissant
             case "c" -> {
-                affichageScoreDecroissant(new ArrayList<Joueur>());
+                affichageScoreCroissant();
             }
             // Si l'option entrée est D alors on lui affiche la liste des scores par ordre décroissant
             case "d" -> {
-                affichageScoreCroissant(new ArrayList<Joueur>());
+                affichageScoreDecroissant();
             }
             // Si l'option entrée est M alors on lui affiche le menu principal du jeu
             case "m" -> {
@@ -85,36 +71,33 @@ public class AffichageScores {
         appelLimite(AffichageScores::menuScore);
     }
 
-    public static void affichageScoreDecroissant(List<Joueur> joueurs) {
+    public static void affichageScoreDecroissant() {
+
+        List<Joueur> joueurs = Scores.getJoueurs();
 
         // Affichage des scores dans l'odre décroissant (meilleur au moins fort)
 
         System.out.println(ansi().fgCyan().a("Tableau de scores : (Ordre Décroissant)").reset());
 
-        // Boucle qui affiche le tableau multidimensionnel dans l'ordre
-        for (int i = 0; i < 10; i++) {
-            System.out.println(ansi().fg(Ansi.Color.BLUE).a(joueurs.get(i).nom + ", " + joueurs.get(i).score).reset());
+        // Boucle qui affiche la liste à l'envers
+        for (int i = joueurs.size() - 1; i >= Math.max(0, joueurs.size() - 10); i--) {
+            System.out.println(ansi().fg(joueurs.get(i).couleur).a(joueurs.get(i).nom + ", " + joueurs.get(i).score).reset());
         }
 
     }
 
-    public static void affichageScoreCroissant(List<Joueur> joueurs) {
+    public static void affichageScoreCroissant() {
+
+        List<Joueur> joueurs = Scores.getJoueurs();
 
         // Affichage des scores dans l'ordre croissant (moins fort au meilleur)
 
         System.out.println(ansi().fgCyan().a("Tableau de scores : (Ordre Croissant)").reset());
 
-        // Boucle qui affiche le tableau multidimensionnel à l'envers
-        for (int i = 9; i >= 0; i--) {
-            System.out.println(ansi().fg(Ansi.Color.BLUE).a(joueurs.get(i).nom + ", " + joueurs.get(i).score).reset());
+        // Boucle qui affiche la liste dans l'ordre
+        for (int i = 0; i < Math.min(joueurs.size(), 10); i++) {
+            System.out.println(ansi().fg(joueurs.get(i).couleur).a(joueurs.get(i).nom + ", " + joueurs.get(i).score).reset());
         }
-
-    }
-
-    public static void modifierLesScores() {
-
-        // Faire l'ajout ou la modif dans le tableau et renvoyer le tableau pour retrier à chaque fois dans les fonctions d'affichages
-        // Ajout et Modif (Commencement de partie et de choix du pseudo si déjà existant on actualise le score correspondant donc retrie derrière)
 
     }
 

@@ -1,5 +1,7 @@
 package com.company;
 
+import com.company.gameplay.Joueur;
+import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.AnsiConsole;
 
 import java.io.IOException;
@@ -8,9 +10,12 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import static org.fusesource.jansi.Ansi.ansi;
+
 public class Main {
 
     public static void main(String[] args) {
+        Scores.chargerJoueur();
         //#region Code spécifique a windows
         if (System.getProperty("os.name").toLowerCase().contains("win")) {
             // Fait fonctionner jansi, pose apparent des problèmes sur mac et dans IntelliJ
@@ -36,6 +41,11 @@ public class Main {
             rester = Menu.menu();
         }
 
+        try {
+            Sauvegarde.sauvegarder(Scores.getJoueurs());
+        } catch (IOException e) {
+            System.out.println(ansi().fgRed().a("Impossible de sauvegarder les joueurs"));
+        }
     }
 
     /**
