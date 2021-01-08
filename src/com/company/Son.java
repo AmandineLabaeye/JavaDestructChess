@@ -5,12 +5,15 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import java.net.URL;
 
+/**
+ * Un son qui peut être joué
+ */
 public class Son {
     private Clip clip;
 
     /**
      * @param soundName Le nom du fichier sonore à jouer.
-     *  Doit être placer dans le dossier resources
+     *  Doit être placer dans le dossier resources et être au format .wav
      */
     public Son(String soundName) {
         try {

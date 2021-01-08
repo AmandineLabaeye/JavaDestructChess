@@ -9,6 +9,9 @@ import static com.company.Main.appelLimite;
 import static com.company.Main.s;
 import static org.fusesource.jansi.Ansi.ansi;
 
+/**
+ * Affiche les menus liés au scores
+ */
 @SuppressWarnings("RedundantLabeledSwitchRuleCodeBlock")
 public class AffichageScores {
 

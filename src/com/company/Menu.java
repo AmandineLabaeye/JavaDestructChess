@@ -10,6 +10,9 @@ import static com.company.Main.appelLimite;
 import static com.company.Main.s;
 import static org.fusesource.jansi.Ansi.ansi;
 
+/**
+ * Affiche les différents menus
+ */
 @SuppressWarnings("RedundantLabeledSwitchRuleCodeBlock")
 public class Menu {
 

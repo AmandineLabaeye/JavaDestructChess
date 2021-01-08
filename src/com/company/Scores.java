@@ -6,6 +6,9 @@ import java.util.List;
 
 import static org.fusesource.jansi.Ansi.ansi;
 
+/**
+ * Gères le tableau des meilleurs scores
+ */
 public class Scores {
 
     // On défini la liste des profils

@@ -179,6 +179,9 @@ public class Jeu {
         return true;
     }
 
+    /**
+     * Élimine les joueurs si besoins
+     */
     private void verifierEliminations() {
         // Récupération des joueurs qui ne peuvent plus se déplacer
         List<Joueur> elimines = joueurVivants.stream().filter(this::encercle).collect(Collectors.toList());

@@ -6,6 +6,9 @@ import java.util.Scanner;
 import static com.company.Main.s;
 import static com.company.Main.appelLimite;
 
+/**
+ * Récupère une entré dans la console dans un format donné
+ */
 public class EntreeUtilisateur {
 
     /**
