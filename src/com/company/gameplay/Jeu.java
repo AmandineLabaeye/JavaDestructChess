@@ -54,8 +54,8 @@ public class Jeu {
         Iterator<Joueur> iterator = joueurVivants.listIterator(new Random().nextInt(joueurVivants.size()));
         boolean premierTour = true;
 
-        // Boucle sur tous les joueurs tant qu'il en rete plus d'un en vie
-        while (joueurVivants.size() > 1) {
+        // Boucle sur tous les joueurs tant qu'il en reste plus d'un en vie
+        while (conterJoueurs() > 1) {
             Joueur joueur = iterator.next();
 
             // Si le joueur est éliminé, il ne peux pas joué
@@ -115,6 +115,17 @@ public class Jeu {
         partieTerminee(joueurVivants.get(0));
     }
 
+    /**
+     * Conte le nombre de joueurs non éliminé
+     */
+    private int conterJoueurs() {
+        return (int)joueurVivants.stream().filter(joueur -> !joueur.estElimine()).count();
+    }
+
+    /**
+     * Annonce le gagnant et distribue les points
+     * @param gagnant Le dernier joueurs non éliminé
+     */
     private void partieTerminee(Joueur gagnant){
         List<Joueur> perdants = joueurs.stream().filter(joueur -> joueur != gagnant).collect(Collectors.toList());
         System.out.println(
