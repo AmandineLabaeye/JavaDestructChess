@@ -1,9 +1,6 @@
 package com.company.gameplay;
 
-import com.company.EntreeUtilisateur;
-import com.company.Profil;
-import com.company.Scores;
-import com.company.Son;
+import com.company.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -16,9 +13,6 @@ import static org.fusesource.jansi.Ansi.ansi;
  * Class de base du gameplay
  */
 public class Jeu {
-    private final Son MUSIC = new Son("8-Bit-Puzzler");
-    private final Son SON_PLACER = new Son("chiou");
-    private final Son SON_DEBUT = new Son("game-start");
 
     private final Plateau plateau = new Plateau();
     private final List<Joueur> joueurs; // Tous les joueurs de la partie
@@ -34,7 +28,7 @@ public class Jeu {
      * Lancer la partie
      */
     public void jouer() {
-        SON_DEBUT.jouer();
+        Sons.DEBUT.jouer();
         // On commence par demander à chaque joueur ou il veut se placer
         for (Joueur joueur : joueurVivants) {
             // On dessine le plateau et affiche un message
@@ -44,11 +38,11 @@ public class Jeu {
             Case depart = demanderCase();
             // Et on le place à la case en question
             placerJoueur(joueur, depart);
-            SON_PLACER.jouer();
+            Sons.PLACER.jouer();
         }
 
         // Lancement de la musique
-        MUSIC.jouerEnBoucle();
+        Sons.MUSIC.jouerEnBoucle();
 
         // Initialise l'itérateur en commençant par un index aléatoire
         Iterator<Joueur> iterator = joueurVivants.listIterator(new Random().nextInt(joueurVivants.size()));
@@ -97,6 +91,7 @@ public class Jeu {
 
             // On détruit la case entré par le joueur
             demanderCase().detruire();
+            Sons.CASSE.jouer();
 
             // On élimine les joueurs qui doive l'être
             verifierEliminations();
@@ -153,7 +148,7 @@ public class Jeu {
 
         Scores.actualiserScores();
 
-        MUSIC.stop();
+        Sons.MUSIC.stop();
     }
 
 
@@ -192,8 +187,8 @@ public class Jeu {
         // Affichage du message de défaite
         if (elimines.size() > 1) {
             System.out.println(
-                    ansi().bgBrightYellow().fgBlack().a("COMBO!\n").bgDefault()
-                    .bgBrightYellow().a(elimines.size() + s( " joueurs sont encerclés! Ils sont éliminés.")).reset()
+                    ansi().bgBrightYellow().fgBlack().a("COMBO!\n").reset()
+                    .fgBrightRed().a(elimines.size() + s( " joueurs sont encerclés! Ils sont éliminés.")).reset()
             );
         } else {
             Joueur elimine = elimines.get(0);
@@ -319,6 +314,7 @@ public class Jeu {
 
         //#region Easter egg 🤫
         if (joueur.posX == 10 && joueur.posY == 4 && direction == Direction.DROITE) {
+            Sons.EASTER_EGG.jouer();
             dessiner(true);
             System.out.println(ansi().fgBrightMagenta().a(s(
                     "Vous avez trouver une warp zone 🌌\n" +
@@ -326,7 +322,7 @@ public class Jeu {
             )).reset());
 
             Case c = demanderCase();
-            SON_PLACER.jouer();
+            Sons.PLACER.jouer();
             return c;
         }
         //#endregion
@@ -337,6 +333,7 @@ public class Jeu {
             return appelLimite(this::demanderDeplacement, joueur);
         }
 
+        Sons.DEPLACEMENT.jouer();
         return c;
     }
 
