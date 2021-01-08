@@ -125,8 +125,7 @@ public class Jeu {
 
         /* ** fin de la partie ** */
 
-        // Si il n'y a plus aucun joueur, on passe null
-        partieTerminee(joueurVivants.size() > 0 ? joueurVivants.get(0) : null);
+        partieTerminee();
     }
 
     /**
@@ -138,9 +137,10 @@ public class Jeu {
 
     /**
      * Annonce le gagnant et distribue les points
-     * @param gagnant Le dernier joueurs non éliminé, ou null en cas d'égalité
      */
-    private void partieTerminee(Joueur gagnant){
+    private void partieTerminee(){
+        Joueur gagnant = joueurVivants.stream().filter(joueur -> !joueur.estElimine()).findFirst().orElse(null);
+
         if (gagnant == null) {
             // Cas spécial ou tous les joueurs son éliminés
             System.out.println(ansi().fgBrightRed().a(s("Ils semble que tous les joueurs soit éliminés, ils perdent tous 3 points")));
