@@ -49,8 +49,8 @@ public class AffichageScores {
 
                 .fgBlue().a(" ==============================================================\n")
                 .fgBlue().a("| ").fgCyan().a("Veuillez saisir une option ci-dessous ").fgBlue().a("                       |\n")
-                .fgBlue().a("| ").fgMagenta().a("* - C : Voir le score croissant (Du meilleur au moins fort)").fgBlue().a("  |\n")
-                .fgBlue().a("| ").fgGreen().a("* - D : Voir le score (Du moins fort au meilleur)").fgBlue().a("            |\n")
+                .fgBlue().a("| ").fgMagenta().a("* - C : Voir le score croissant (Du moins fort au plus fort)").fgBlue().a("  |\n")
+                .fgBlue().a("| ").fgGreen().a("* - D : Voir le score (Du plus fort au moins fort)").fgBlue().a("            |\n")
                 .fgBlue().a("| ").fgBlue().a("* - M : Retour au menu principal").fgBlue().a("                             |\n")
                 .fgBlue().a(" ==============================================================\n")
 
