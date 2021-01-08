@@ -15,16 +15,21 @@ public class Plateau implements Iterable<Case[]> {
     /**
      * Taille horizontale du plateau
      */
-    public static final int TAILLE_X = 11;
+    public final int tailleX;
     /**
      * Taille verticale du plateau
      */
-    public static final int TAILLE_Y = 10;
+    public final int tailleY;
 
     private final Case[][] plateau;
 
-    public Plateau() {
-        plateau = new Case[TAILLE_Y][TAILLE_X];
+    /**
+     * Créé un plateau avec un taille précise
+     */
+    public Plateau(int tailleX, int tailleY) {
+        this.tailleX = tailleX;
+        this.tailleY = tailleY;
+        plateau = new Case[tailleY][tailleX];
         // On remplie le plateau de cases vides
         for (int i = 0; i < plateau.length; i++) {
             Case[] ligne = plateau[i];
@@ -32,6 +37,13 @@ public class Plateau implements Iterable<Case[]> {
                 ligne[j] = new Case(j, i);
             }
         }
+    }
+
+    /**
+     * Créé un plateau avec la taille par default: 11 x 10
+     */
+    public Plateau() {
+        this(11, 10);
     }
 
     /**

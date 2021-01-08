@@ -112,6 +112,16 @@ public class Menu {
 
         // Demande du nombre de profils
         int nbJoueurs = EntreeUtilisateur.getInt();
+
+        //#region Mode de jeu secret 🤫
+        boolean mortSubite = false;
+        if (nbJoueurs == -1) {
+            mortSubite = true;
+            nbJoueurs = 2;
+            System.out.println(ansi().fgRed().a(s("😈 Bienvenue dans le mode mort subite 😈")).reset().a(" (2 joueurs)"));
+        }
+        //#endregion
+
         // Vérification qu'il y en a le bon nombre
         if (nbJoueurs < 2 || nbJoueurs > 4) {
             System.out.println(ansi().fgRed().a("Il peut y avoir entre 2 et 4 joueurs").reset());
@@ -143,7 +153,15 @@ public class Menu {
                 profils[i] = profil;
             }
         }
-        // Affichage du plateau
+
+        //#region Mode de jeu secret 🤫
+        if (mortSubite) {
+            new Jeu(profils, 4, 4).jouer();
+            return;
+        }
+        //#endregion
+
+        // Début de la partie
         new Jeu(profils).jouer();
 
     }

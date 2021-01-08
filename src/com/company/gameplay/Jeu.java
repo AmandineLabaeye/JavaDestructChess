@@ -14,11 +14,29 @@ import static org.fusesource.jansi.Ansi.ansi;
  */
 public class Jeu {
 
-    private final Plateau plateau = new Plateau();
+    private final Plateau plateau;
     private final List<Joueur> joueurs; // Tous les joueurs de la partie
     private final List<Joueur> joueurVivants; // Les joueurs encore vivants
 
+    /**
+     * Initialise une partie avec les joueurs donnés
+     * @param profils Les profils des joueurs dans cette partie
+     */
     public Jeu(Profil[] profils) {
+         plateau = new Plateau();
+        // Initialisation de la liste de joueurs.
+        this.joueurs = Arrays.stream(profils).map(Joueur::new).collect(Collectors.toList());
+        joueurVivants = new LinkedList<>(joueurs);
+    }
+
+    /**
+     * Initialise une partie avec les joueurs donnés et un plateau de taille spécifique
+     * @param profils Les profils des joueurs dans cette partie
+     * @param tailleX La taille X du plateau
+     * @param tailleY La taille Y du plateau
+     */
+    public Jeu(Profil[] profils, int tailleX, int tailleY){
+        plateau = new Plateau(tailleX, tailleY);
         // Initialisation de la liste de joueurs.
         this.joueurs = Arrays.stream(profils).map(Joueur::new).collect(Collectors.toList());
         joueurVivants = new LinkedList<>(joueurs);
@@ -265,7 +283,7 @@ public class Jeu {
 
         }
         // Dessin de la dernière ligne
-        sb.append("-".repeat(Plateau.TAILLE_X * 5 + 1));
+        sb.append("-".repeat(plateau.tailleX * 5 + 1));
 
         // Envoie du texte dans la console
         System.out.println(sb.toString());
@@ -292,8 +310,8 @@ public class Jeu {
         int index = EntreeUtilisateur.getInt() - 1;
 
         // Calcul les cordonné de la case
-        int x = index % Plateau.TAILLE_X;
-        int y = index / Plateau.TAILLE_X;
+        int x = index % plateau.tailleX;
+        int y = index / plateau.tailleX;
 
         Case c = plateau.getCase(x, y);
 
