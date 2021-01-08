@@ -30,6 +30,7 @@ public class Main {
         }
         //#endregion
 
+        new Son("error.wav").jouer();
         //Affichage de l'en-tête du menu
         Menu.enteteMenu();
 

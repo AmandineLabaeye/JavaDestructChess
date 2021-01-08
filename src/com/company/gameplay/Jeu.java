@@ -3,6 +3,7 @@ package com.company.gameplay;
 import com.company.EntreeUtilisateur;
 import com.company.Profil;
 import com.company.Scores;
+import com.company.Son;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -15,6 +16,9 @@ import static org.fusesource.jansi.Ansi.ansi;
  * Class de base du gameplay
  */
 public class Jeu {
+    private final Son MUSIC = new Son("8-Bit-Puzzler");
+    private final Son SON_PLACER = new Son("chiou");
+    private final Son SON_DEBUT = new Son("game-start");
 
     private final Plateau plateau = new Plateau();
     private final List<Joueur> joueurs; // Tous les joueurs de la partie
@@ -30,6 +34,7 @@ public class Jeu {
      * Lancer la partie
      */
     public void jouer() {
+        SON_DEBUT.jouer();
         // On commence par demander à chaque joueur ou il veut se placer
         for (Joueur joueur : joueurVivants) {
             // On dessine le plateau et affiche un message
@@ -39,7 +44,11 @@ public class Jeu {
             Case depart = demanderCase();
             // Et on le place à la case en question
             placerJoueur(joueur, depart);
+            SON_PLACER.jouer();
         }
+
+        // Lancement de la musique
+        MUSIC.jouerEnBoucle();
 
         // Initialise l'itérateur en commençant par un index aléatoire
         Iterator<Joueur> iterator = joueurVivants.listIterator(new Random().nextInt(joueurVivants.size()));
@@ -132,6 +141,8 @@ public class Jeu {
         }
 
         Scores.actualiserScores();
+
+        MUSIC.stop();
     }
 
 
