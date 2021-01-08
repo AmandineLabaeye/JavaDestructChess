@@ -78,6 +78,7 @@ public class Menu {
 
     /**
      * Affichage des règles dans la console
+     *
      */
     public static void regles() {
         // Jouer le son de click
