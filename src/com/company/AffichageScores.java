@@ -12,12 +12,17 @@ import static org.fusesource.jansi.Ansi.ansi;
 @SuppressWarnings("RedundantLabeledSwitchRuleCodeBlock")
 public class AffichageScores {
 
-    // Affiche l'entête du menu et le menu des scores
+    /**
+     * Fonction qui affiche l'entête du menu et le menu des scores
+     */
     public static void appelMenu() {
         menuEntete();
         menuScore();
     }
 
+    /**
+     * Fonction qui affiche l'entête du menu
+     */
     public static void menuEntete() {
 
         // Message de bienvenue
@@ -31,14 +36,16 @@ public class AffichageScores {
 
     }
 
-    // Création de la fonction " menuScore "
+    /**
+     * Fonction qui affiche le menu des scores et qui récupère les choix de l'utilisateur pour le rediriger vers le bon onglet
+     */
     public static void menuScore() {
         Menu.SON_CLICK.jouer();
         // Vérifie la taille de la liste Profil si elle est égal à 0 alors on le renvoie au menu principal, car la liste est vide
         if (Scores.getJoueurs().size() == 0) {
             System.out.println(ansi().fgRed().a(s(
                     "Aucun joueur n'a été enregistré\n" +
-                    "Appuyé sur ENTRER pour retourner au menu principale"
+                    "Appuyé sur ENTRER pour retourner au menu principal"
             )));
             new Scanner(System.in).nextLine();
             return;
@@ -84,29 +91,35 @@ public class AffichageScores {
             }
         }
 
+        // Fonction récursive limiter pour éviter que l'utilisateur face planter le jeu, si il rentre trop de tentatives
         appelLimite(AffichageScores::menuScore);
     }
 
+    /**
+     * Fonction qui affichage les scores dans l'odre décroissant (meilleur au moins fort)
+     */
     public static void affichageScoreDecroissant() {
 
+        // On défini la liste des profils (Joueurs)
         List<Profil> profils = Scores.getJoueurs();
 
-        // Affichage des scores dans l'odre décroissant (meilleur au moins fort)
 
         System.out.println(ansi().fgCyan().a("Tableau de scores : (Ordre Décroissant)").reset());
 
-        // Boucle qui affiche la liste à l'envers
+        // Boucle qui affiche la liste à l'envers (Pour qu'elle soit dans le bon sens)
         for (int i = profils.size() - 1; i >= Math.max(0, profils.size() - 10); i--) {
             System.out.println(ansi().fg(profils.get(i).couleur).a(profils.get(i).nom + ", " + profils.get(i).score).reset());
         }
 
     }
 
+    /**
+     * Fonction qui affiche les scores dans l'ordre croissant (moins fort au meilleur)
+     */
     public static void affichageScoreCroissant() {
 
+        // On défini la liste des profils (Joueurs)
         List<Profil> profils = Scores.getJoueurs();
-
-        // Affichage des scores dans l'ordre croissant (moins fort au meilleur)
 
         System.out.println(ansi().fgCyan().a("Tableau de scores : (Ordre Croissant)").reset());
 

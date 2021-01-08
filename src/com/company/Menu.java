@@ -15,6 +15,9 @@ public class Menu {
     public final static Son SON_CLICK = new Son("click");
     public final static Son SON_ERREUR = new Son("incorrect");
 
+    /**
+     * Fonction qui affiche l'entête du Menu Principale
+     */
     public static void enteteMenu() {
         System.out.println(ansi().fgYellow().a(
                 "********************************************************\n" +
@@ -25,7 +28,10 @@ public class Menu {
         ).reset());
     }
 
-    // Création de la fonction " menu "
+    /**
+     * Fonction qui affiche le menu, qui gère les choix de l'utilisateur et le redirige correctement
+     * @return vrai ou faux si il faut sortir de l'application ou non
+     */
     public static boolean menu() {
         // Affichage des option
         System.out.println(ansi()
@@ -94,7 +100,9 @@ public class Menu {
 
     }
 
-    // Création d'une nouvelle fonction qui permet de choisir le pseudo et la couleur des joueurs
+    /**
+     * Fonction qui permet de demander aux joueurs de choisir leur pseudo et la couleur de leur pion
+     */
     public static void choixPseudoCouleurs() {
         // Jouer le son de click
         SON_CLICK.jouer();
@@ -138,7 +146,11 @@ public class Menu {
 
     }
 
-    // Création d'une fonction de vérification pour la couleur
+    /**
+     * Fonction qui permet de vérifier si la couleur entrée existe et qu'elle est correcte
+     * @param pseudoUtilisateur récupère le nom d'utilisateur choisi par le joueur pour le réafficher dans la question
+     * @return couleur, on retourne la couleur pour l'ajouter au tableau des scores
+     */
     public static Ansi.Color couleurVerif(String pseudoUtilisateur) {
         // Initialisation du scanner
         Scanner scanner = new Scanner(System.in);
@@ -181,7 +193,12 @@ public class Menu {
 
     }
 
-    // Création d'une fonction pour vérifier la taille du pseudo
+    /**
+     * Fonction qui vérifie que le pseudo saisie est conforme au règle demander par le jeu et que les pseudo des joueurs sont tous différents
+     * @param i itération de la boucle pour savoir à quel joueur on demande un pseudo
+     * @param profils Liste des joueurs
+     * @return pseudo choisi par l'utilisateur
+     */
     public static String pseudoVerif(int i, Profil[] profils) {
         // Initialisation du scanner
         Scanner scanner = new Scanner(System.in);
