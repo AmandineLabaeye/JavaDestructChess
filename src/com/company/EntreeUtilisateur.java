@@ -19,7 +19,7 @@ public class EntreeUtilisateur {
         }
         catch (InputMismatchException e){
             System.out.println(s("Entrée incorrecte"));
-            Menu.SON_ERREUR.jouer();
+            Sons.ERREUR.jouer();
             return appelLimite(EntreeUtilisateur::getInt);
         }
     }
@@ -33,7 +33,7 @@ public class EntreeUtilisateur {
         String entree = scanner.nextLine();
         if (entree.length() != 1) {
             System.out.println(s("Entrée incorrecte"));
-            Menu.SON_ERREUR.jouer();
+            Sons.ERREUR.jouer();
             return appelLimite(EntreeUtilisateur::getChar);
         }
         return entree.toLowerCase().charAt(0);

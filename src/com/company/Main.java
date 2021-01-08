@@ -65,7 +65,7 @@ public class Main {
      * @param <R> Le type de retour de la fonction
      * @return La valeur retourné par la fonction
      */
-    public static <T, R> R appelLimite(Function<T, R> func, T arg){
+    public static <T, R> R appelLimite(Function<T, R> func, T arg) {
         // Vérification de la taille de la pile d'appel
         if (Thread.currentThread().getStackTrace().length > 1000) {
             // Si la pile est trop profonde, on quitte le programme
@@ -87,7 +87,7 @@ public class Main {
      * @param <R> Le type de retour de la fonction
      * @return La valeur retourné par la fonction
      */
-    public static <T1, T2, R> R appelLimite(BiFunction<T1, T2, R> func, T1 arg1, T2 arg2){
+    public static <T1, T2, R> R appelLimite(BiFunction<T1, T2, R> func, T1 arg1, T2 arg2) {
         // Vérification de la taille de la pile d'appel
         if (Thread.currentThread().getStackTrace().length > 1000) {
             // Si la pile est trop profonde, on quitte le programme
@@ -105,7 +105,7 @@ public class Main {
      * @param <R> Le type de retour de la fonction
      * @return La valeur retourné par la fonction
      */
-    public static <R> R appelLimite(Supplier<R> func){
+    public static <R> R appelLimite(Supplier<R> func) {
         // Vérification de la taille de la pile d'appel
         if (Thread.currentThread().getStackTrace().length > 1000) {
             // Si la pile est trop profonde, on quitte le programme
@@ -121,7 +121,7 @@ public class Main {
      * Appel la fonction passé, a partir d'une certaine profondeur de la pile d'appel, quitte le program
      * @param func Fonction à appeler
      */
-    public static void appelLimite(Runnable func){
+    public static void appelLimite(Runnable func) {
         // Vérification de la taille de la pile d'appel
         if (Thread.currentThread().getStackTrace().length > 1000) {
             // Si la pile est trop profonde, on quitte le programme

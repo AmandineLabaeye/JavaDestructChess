@@ -12,9 +12,10 @@ import static org.fusesource.jansi.Ansi.ansi;
 
 @SuppressWarnings("RedundantLabeledSwitchRuleCodeBlock")
 public class Menu {
-    public final static Son SON_CLICK = new Son("click");
-    public final static Son SON_ERREUR = new Son("incorrect");
 
+    /**
+     * Fonction qui affiche l'entête du Menu Principale
+     */
     public static void enteteMenu() {
         System.out.println(ansi().fgYellow().a(
                 "********************************************************\n" +
@@ -25,7 +26,10 @@ public class Menu {
         ).reset());
     }
 
-    // Création de la fonction " menu "
+    /**
+     * Fonction qui affiche le menu, qui gère les choix de l'utilisateur et le redirige correctement
+     * @return vrai ou faux si il faut sortir de l'application ou non
+     */
     public static boolean menu() {
         // Affichage des option
         System.out.println(ansi()
@@ -66,7 +70,7 @@ public class Menu {
             //Si l'utilisateur ne rentre pas d'option valide
             default -> {
                 System.out.println(ansi().fg(Ansi.Color.RED).a("Vous devez entrer une des options ci-dessus").reset());
-                SON_ERREUR.jouer();
+                Sons.ERREUR.jouer();
             }
         }
         return true;
@@ -78,7 +82,7 @@ public class Menu {
      */
     public static void regles() {
         // Jouer le son de click
-        SON_CLICK.jouer();
+        Sons.CLICK.jouer();
         System.out.println(ansi()
                 .fgBlue().a("==================================================")
                 .fgGreen().a(s("| Bienvenue dans les règles de [DestructChess] ! |"))
@@ -95,10 +99,12 @@ public class Menu {
 
     }
 
-    // Création d'une nouvelle fonction qui permet de choisir le pseudo et la couleur des joueurs
+    /**
+     * Fonction qui permet de demander aux joueurs de choisir leur pseudo et la couleur de leur pion
+     */
     public static void choixPseudoCouleurs() {
         // Jouer le son de click
-        SON_CLICK.jouer();
+        Sons.CLICK.jouer();
         System.out.println("Combien de joueurs? (entre 2 et 4)");
 
         // Demande du nombre de profils
@@ -106,10 +112,10 @@ public class Menu {
         // Vérification qu'il y en a le bon nombre
         if (nbJoueurs < 2 || nbJoueurs > 4) {
             System.out.println(ansi().fgRed().a("Il peut y avoir entre 2 et 4 joueurs").reset());
-            SON_ERREUR.jouer();
+            Sons.ERREUR.jouer();
             appelLimite(Menu::choixPseudoCouleurs);
         }
-        SON_CLICK.jouer();
+        Sons.CLICK.jouer();
 
         // Initialisation du tableau des profils
         Profil[] profils = new Profil[nbJoueurs];
@@ -139,7 +145,11 @@ public class Menu {
 
     }
 
-    // Création d'une fonction de vérification pour la couleur
+    /**
+     * Fonction qui permet de vérifier si la couleur entrée existe et qu'elle est correcte
+     * @param pseudoUtilisateur récupère le nom d'utilisateur choisi par le joueur pour le réafficher dans la question
+     * @return couleur, on retourne la couleur pour l'ajouter au tableau des scores
+     */
     public static Ansi.Color couleurVerif(String pseudoUtilisateur) {
         // Initialisation du scanner
         Scanner scanner = new Scanner(System.in);
@@ -172,17 +182,22 @@ public class Menu {
             default -> {
                 // Message d'erreur qui permet de prévenir l'utilisateur en cas de mauvaise saisie
                 System.out.println(ansi().fg(Ansi.Color.RED).a("Vous devez entrer une des options ci-dessus").reset());
-                SON_ERREUR.jouer();
+                Sons.ERREUR.jouer();
                 return appelLimite(Menu::couleurVerif, pseudoUtilisateur);
             }
         }
-        SON_CLICK.jouer();
+        Sons.CLICK.jouer();
         // Retourner la variable couleur
         return couleur;
 
     }
 
-    // Création d'une fonction pour vérifier la taille du pseudo
+    /**
+     * Fonction qui vérifie que le pseudo saisie est conforme au règle demander par le jeu et que les pseudo des joueurs sont tous différents
+     * @param i itération de la boucle pour savoir à quel joueur on demande un pseudo
+     * @param profils Liste des joueurs
+     * @return pseudo choisi par l'utilisateur
+     */
     public static String pseudoVerif(int i, Profil[] profils) {
         // Initialisation du scanner
         Scanner scanner = new Scanner(System.in);
@@ -191,21 +206,21 @@ public class Menu {
         String pseudoUtilisateur = s(scanner.nextLine());
         // Condition : Si le pseudo < 2 caractères ou que le pseudo > 10 alors message d'erreur
         if (pseudoUtilisateur.length() < 2 || pseudoUtilisateur.length() > 10) {
-            SON_ERREUR.jouer();
+            Sons.ERREUR.jouer();
             System.out.println(ansi().fg(Ansi.Color.RED).a(s("Vous devez saisir un pseudo entre 2 caractères minimum et 10 caractères maximum")).reset());
             // Rappel de la fonction ( en cas d'erreur )
             return appelLimite(Menu::pseudoVerif, i, profils);
 
             // Vérification que les pseudos sont différents et que pour le premier joueur il peut choisir ce qu'il veut par rapport au tableau profils
         } else if (Arrays.stream(profils).anyMatch(joueur -> joueur != null && joueur.nom.equals(pseudoUtilisateur))) {
-            SON_ERREUR.jouer();
+            Sons.ERREUR.jouer();
             System.out.println(ansi().fg(Ansi.Color.RED).a(s("Ce joueur existe déjà, veuillez modifier votre pseudo")).reset());
             // Rappel de la fonction ( en cas d'erreur )
             return appelLimite(Menu::pseudoVerif, i, profils);
 
         }
 
-        SON_CLICK.jouer();
+        Sons.CLICK.jouer();
 
         // Cas d'arrêt de la récursivité
         // Retourne la variable pseudo

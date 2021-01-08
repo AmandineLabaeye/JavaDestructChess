@@ -11,18 +11,29 @@ public class Scores {
     // On défini la liste des profils
     private static List<Profil> profils;
 
-    // Fonction pour ajouter un profil à la liste
+    /**
+     * Fonction qui ajoute un profil à la liste des scores
+     * @param profil Liste des joueurs pour les scores
+     */
     public static void ajouterJoueur(Profil profil) {
         // ajoute un profil au début de la liste pour qu'elle reste dans l'ordre
         profils.add(0, profil);
     }
 
+    /**
+     * Fonction qui recherche dans la liste des joueurs si le jour existe déjà ou non, pour actualiser ou modifier le score
+     * @param pseudoUtilisateur pseudo choisi par l'utilisateur
+     * @return la condition qui vérifie si il existe déjà ou non (Null ou le pseudo du joueur)
+     */
     public static Profil chercheJoueur(String pseudoUtilisateur) {
         // Il récupère tout les profils dont le pseudo est égal au pseudo passé en paramètre (Normalement il y en a qu'un),
         // récupère le premier et retourne null si il y en a pas.
         return profils.stream().filter(joueur -> joueur.nom.equals(pseudoUtilisateur)).findFirst().orElse(null);
     }
 
+    /**
+     * Fonction qui actualise les scores et les trient
+     */
     public static void actualiserScores() {
 
         // Je récupère la taille du tableau
@@ -33,11 +44,17 @@ public class Scores {
 
     }
 
-    // Récupérer la liste des profils
+    /**
+     * Fonction qui renvoie la liste des joueurs
+     * @return la liste pour la réafficher
+     */
     public static List<Profil> getJoueurs() {
         return profils;
     }
 
+    /**
+     * Fonction qui charge le fichier de sauvegarde, pour toujours accéder au scores au redémarrage de l'application
+     */
     public static void chargerJoueur() {
         try {
             profils = Sauvegarde.charger();
@@ -47,7 +64,13 @@ public class Scores {
         }
     }
 
-    // Fonction de partionnement
+    /**
+     * Fonction de partitionnement pour le tri
+     * @param profils la liste des joueurs
+     * @param indexDebut index du début de la liste
+     * @param indexFin index de fin de la liste
+     * @return retourne l'index ou doit être placé la carte
+     */
     private static int partition(List<Profil> profils, int indexDebut, int indexFin) {
 
         // Le pivot est initialisé au dernier index de la liste
@@ -83,7 +106,12 @@ public class Scores {
 
     }
 
-    // Fonction de tri
+    /**
+     * Fonction qui tri la liste en récursif
+     * @param profils liste des joueurs
+     * @param indexDebut index de début de la liste
+     * @param indexFin index de fin de la liste
+     */
     private static void tri(List<Profil> profils, int indexDebut, int indexFin) {
         // Si l'index du début est inférieur à l'index de fin alors
         if (indexDebut < indexFin) {
