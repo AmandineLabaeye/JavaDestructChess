@@ -17,10 +17,17 @@ public class EntreeUtilisateur {
      */
     public static int getInt() {
         Scanner scanner = new Scanner(System.in);
-        try {
-            return scanner.nextInt();
+        String entree = scanner.nextLine();
+
+        // Le joueur veut il quitter?
+        if (entree.equalsIgnoreCase("quitter")) {
+            System.exit(0);
         }
-        catch (InputMismatchException e){
+
+        try {
+            return Integer.parseInt(entree);
+        }
+        catch (NumberFormatException e){
             System.out.println(s("Entrée incorrecte"));
             Sons.ERREUR.jouer();
             return appelLimite(EntreeUtilisateur::getInt);
@@ -34,6 +41,12 @@ public class EntreeUtilisateur {
     public static char getChar() {
         Scanner scanner = new Scanner(System.in);
         String entree = scanner.nextLine();
+
+        // Le joueur veut il quitter?
+        if (entree.equalsIgnoreCase("quitter")) {
+            System.exit(0);
+        }
+
         if (entree.length() != 1) {
             System.out.println(s("Entrée incorrecte"));
             Sons.ERREUR.jouer();
