@@ -1,9 +1,6 @@
 package com.company.gameplay;
 
-import com.company.EntreeUtilisateur;
-import com.company.Profil;
-import com.company.Scores;
-import com.company.Son;
+import com.company.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -16,9 +13,6 @@ import static org.fusesource.jansi.Ansi.ansi;
  * Class de base du gameplay
  */
 public class Jeu {
-    private final Son MUSIC = new Son("8-Bit-Puzzler");
-    private final Son SON_PLACER = new Son("chiou");
-    private final Son SON_DEBUT = new Son("game-start");
 
     private final Plateau plateau = new Plateau();
     private final List<Joueur> joueurs; // Tous les joueurs de la partie
@@ -34,7 +28,7 @@ public class Jeu {
      * Lancer la partie
      */
     public void jouer() {
-        SON_DEBUT.jouer();
+        Sons.DEBUT.jouer();
         // On commence par demander à chaque joueur ou il veut se placer
         for (Joueur joueur : joueurVivants) {
             // On dessine le plateau et affiche un message
@@ -44,11 +38,11 @@ public class Jeu {
             Case depart = demanderCase();
             // Et on le place à la case en question
             placerJoueur(joueur, depart);
-            SON_PLACER.jouer();
+            Sons.PLACER.jouer();
         }
 
         // Lancement de la musique
-        MUSIC.jouerEnBoucle();
+        Sons.MUSIC.jouerEnBoucle();
 
         // Initialise l'itérateur en commençant par un index aléatoire
         Iterator<Joueur> iterator = joueurVivants.listIterator(new Random().nextInt(joueurVivants.size()));
@@ -97,6 +91,7 @@ public class Jeu {
 
             // On détruit la case entré par le joueur
             demanderCase().detruire();
+            Sons.CASSE.jouer();
 
             // On élimine les joueurs qui doive l'être
             verifierEliminations();
@@ -112,7 +107,8 @@ public class Jeu {
 
         /* ** fin de la partie ** */
 
-        partieTerminee(joueurVivants.get(0));
+        // Si il n'y a plus aucun joueur, on passe null
+        partieTerminee(joueurVivants.size() > 0 ? joueurVivants.get(0) : null);
     }
 
     /**
@@ -124,22 +120,31 @@ public class Jeu {
 
     /**
      * Annonce le gagnant et distribue les points
-     * @param gagnant Le dernier joueurs non éliminé
+     * @param gagnant Le dernier joueurs non éliminé, ou null en cas d'égalité
      */
     private void partieTerminee(Joueur gagnant){
-        List<Joueur> perdants = joueurs.stream().filter(joueur -> joueur != gagnant).collect(Collectors.toList());
-        System.out.println(
-                s(ansi().fg(gagnant.couleur).a(gagnant.nom).fgBrightYellow().a(" gagne la partie!\n").reset() +
-                "Il remporte " + ansi().fgBrightBlue().a(5).reset().a(" points")
-        ));
-
-        if ((perdants.size() > 1)) {
-            System.out.println(("Les autres joueurs perdent " + ansi().fgBrightBlue().a(3).reset().a(" points")));
+        if (gagnant == null) {
+            // Cas spécial ou tous les joueurs son éliminés
+            System.out.println(ansi().fgBrightRed().a(s("Ils semble que tous les joueurs soit éliminés, ils perdent tous 3 points")));
         }
         else {
-            Joueur perdant = perdants.get(0);
-            System.out.println(ansi().fg(perdant.couleur).a(perdant.nom).reset().a(" perd ").fgBrightBlue().a(3).reset().a(" points"));
+            // Récupère la liste des perdants
+            List<Joueur> perdants = joueurs.stream().filter(joueur -> joueur != gagnant).collect(Collectors.toList());
+            System.out.println(
+                    s(ansi().fg(gagnant.couleur).a(gagnant.nom).fgBrightYellow().a(" gagne la partie!\n").reset() +
+                            "Il remporte " + ansi().fgBrightBlue().a(5).reset().a(" points")
+                    ));
+
+            // Affichage d'un message différent en fonction de du nombre de perdants
+            if ((perdants.size() > 1)) {
+                System.out.println(("Les autres joueurs perdent " + ansi().fgBrightBlue().a(3).reset().a(" points")));
+            }
+            else {
+                Joueur perdant = perdants.get(0);
+                System.out.println(ansi().fg(perdant.couleur).a(perdant.nom).reset().a(" perd ").fgBrightBlue().a(3).reset().a(" points"));
+            }
         }
+
 
         // Ajout et retraits des points
         for (Joueur joueur : joueurs) {
@@ -153,13 +158,13 @@ public class Jeu {
 
         Scores.actualiserScores();
 
-        MUSIC.stop();
+        Sons.MUSIC.stop();
     }
 
 
     /**
      * Test si le est encerclé
-     * Retournera false si le joueur est éliminé
+     * Retournera false si le joueur est déjà éliminé
      */
     private boolean encercle(Joueur joueur) {
         if (joueur.estElimine()) {
@@ -192,8 +197,8 @@ public class Jeu {
         // Affichage du message de défaite
         if (elimines.size() > 1) {
             System.out.println(
-                    ansi().bgBrightYellow().fgBlack().a("COMBO!\n").bgDefault()
-                    .bgBrightYellow().a(elimines.size() + s( " joueurs sont encerclés! Ils sont éliminés.")).reset()
+                    ansi().bgBrightYellow().fgBlack().a("COMBO!").reset().a('\n')
+                    .fgBrightRed().a(elimines.size() + s( " joueurs sont encerclés! Ils sont éliminés.")).reset()
             );
         } else {
             Joueur elimine = elimines.get(0);
@@ -319,6 +324,7 @@ public class Jeu {
 
         //#region Easter egg 🤫
         if (joueur.posX == 10 && joueur.posY == 4 && direction == Direction.DROITE) {
+            Sons.EASTER_EGG.jouer();
             dessiner(true);
             System.out.println(ansi().fgBrightMagenta().a(s(
                     "Vous avez trouver une warp zone 🌌\n" +
@@ -326,7 +332,7 @@ public class Jeu {
             )).reset());
 
             Case c = demanderCase();
-            SON_PLACER.jouer();
+            Sons.PLACER.jouer();
             return c;
         }
         //#endregion
@@ -337,6 +343,7 @@ public class Jeu {
             return appelLimite(this::demanderDeplacement, joueur);
         }
 
+        Sons.DEPLACEMENT.jouer();
         return c;
     }
 

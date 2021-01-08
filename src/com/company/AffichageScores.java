@@ -40,7 +40,7 @@ public class AffichageScores {
      * Fonction qui affiche le menu des scores et qui récupère les choix de l'utilisateur pour le rediriger vers le bon onglet
      */
     public static void menuScore() {
-        Menu.SON_CLICK.jouer();
+        Sons.CLICK.jouer();
         // Vérifie la taille de la liste Profil si elle est égal à 0 alors on le renvoie au menu principal, car la liste est vide
         if (Scores.getJoueurs().size() == 0) {
             System.out.println(ansi().fgRed().a(s(
@@ -80,14 +80,14 @@ public class AffichageScores {
             }
             // Si l'option entrée est M alors on lui affiche le menu principal du jeu
             case "m" -> {
-                Menu.SON_CLICK.jouer();
+                Sons.CLICK.jouer();
                 return;
             }
 
             default -> {
                 // On lui indique qu'il n'a pas entrée l'une des propositions affichée
                 System.out.println(ansi().fg(Ansi.Color.RED).a("Vous devez entrer une des propositions demandées").reset());
-                Menu.SON_ERREUR.jouer();
+                Sons.ERREUR.jouer();
             }
         }
 
