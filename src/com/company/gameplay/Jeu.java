@@ -317,6 +317,20 @@ public class Jeu {
             return appelLimite(this::demanderDeplacement, joueur);
         }
 
+        //#region Easter egg 🤫
+        if (joueur.posX == 10 && joueur.posY == 4 && direction == Direction.DROITE) {
+            dessiner(true);
+            System.out.println(ansi().fgBrightMagenta().a(s(
+                    "Vous avez trouver une warp zone 🌌\n" +
+                    "Choisissez n'importe quel case sur laquelle vous téléporter"
+            )).reset());
+
+            Case c = demanderCase();
+            SON_PLACER.jouer();
+            return c;
+        }
+        //#endregion
+
         Case c = plateau.getAdjacente(direction, joueur.posX, joueur.posY);
 
         if (caseOccupee(c)) {
